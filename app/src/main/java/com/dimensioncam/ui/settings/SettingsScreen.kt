@@ -20,6 +20,7 @@ import com.dimensioncam.R
 import com.dimensioncam.data.model.ArrowStyle
 import com.dimensioncam.data.model.DistanceUnit
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel) {
     val settings by viewModel.settings.collectAsState()
