@@ -1,4 +1,6 @@
 name: Build_DimensionCam_APK
+permissions:
+  contents: write
 
 on:
   push:
