@@ -40,8 +40,8 @@ jobs:
     - name: Get git revision
       id: get_git_revision
       run: |
-        echo "tag_name=$(($(git rev-list HEAD --count) + 100))" >> $GITHUB_OUTPUT
-        echo "release_name=$(($(git rev-list HEAD --count) + 100))" >> $GITHUB_OUTPUT
+        echo "tag_name=$(git rev-list HEAD --count)" >> $GITHUB_OUTPUT
+        echo "release_name=$(git rev-list HEAD --count)" >> $GITHUB_OUTPUT
 
     - name: Create Release
       id: create_release
