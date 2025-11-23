@@ -1,7 +1,15 @@
 plugins {
     id 'com.android.application'
 }
+// Auto versioning similar to zSMTH
 
+def getDate() {
+    new Date().format('yy.MM.dd')
+}
+
+def gitVersion = ('git rev-list HEAD --count'.execute().text.trim().toInteger())
+
+def appVersion = getDate()
 android {
     namespace 'com.zfdang.dimensioncam'
     compileSdk 34
@@ -10,8 +18,8 @@ android {
         applicationId "com.zfdang.dimensioncam"
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode gitVersion
+        versionName appVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         
@@ -36,6 +44,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+        }
+    }
+    // Custom APK naming (zSMTH style)
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def base = "DimensionCam-${variant.buildType.name}-v${defaultConfig.versionName}"
+            output.outputFileName = "${base}.apk"
         }
     }
     compileOptions {
