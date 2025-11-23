@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">尺标相机</string>
+    <string name="title_photos">照片</string>
+    <string name="title_annotation">标注</string>
+    <string name="title_settings">设置</string>
+    
+    <!-- Photos Tab -->
+    <string name="action_add_photo">添加照片</string>
+    <string name="action_delete">删除</string>
+    <string name="confirm_delete_title">删除照片？</string>
+    <string name="confirm_delete_message">这将从应用中移除照片，但保留原始文件。</string>
+    <string name="source_camera">拍照</string>
+    <string name="source_gallery">相册</string>
+    
+    <!-- Annotation Tab -->
+    <string name="action_undo">撤销</string>
+    <string name="action_add_annotation">添加标注</string>
+    <string name="dialog_annotation_properties">属性</string>
+    <string name="label_distance">距离</string>
+    <string name="label_color">颜色</string>
+    <string name="label_width">宽度</string>
+    <string name="unit_mm">毫米</string>
+    <string name="unit_cm">厘米</string>
+    <string name="unit_m">米</string>
+    
+    <!-- Settings Tab -->
+    <string name="pref_arrow_style">箭头样式</string>
+    <string name="style_arrow">箭头</string>
+    <string name="style_t_shape">T型</string>
+    <string name="style_dot">圆点</string>
+    <string name="pref_language">语言</string>
+    <string name="pref_about">关于</string>
+    <string name="pref_version">版本</string>
+    <string name="pref_github">GitHub项目</string>
+    <string name="pref_author">作者</string>
+    <string name="msg_saved_to_gallery">图片已保存到相册</string>
+    <string name="error_save_failed">保存失败</string>
+</resources>

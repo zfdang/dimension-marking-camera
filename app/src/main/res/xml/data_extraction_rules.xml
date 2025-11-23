@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <data-extraction-rules>
-        <cloud-backup>
-            <include domain="database" path="." />
-            <include domain="sharedpref" path="." />
-        </cloud-backup>
-    </data-extraction-rules>
-</resources>
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="sharedpref" path="."/>
+        <include domain="database" path="."/>
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="."/>
+        <include domain="database" path="."/>
+    </device-transfer>
+</data-extraction-rules>
