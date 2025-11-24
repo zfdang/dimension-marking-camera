@@ -39,45 +39,84 @@
         android:layout_marginTop="16dp"
         android:text="@string/label_color" />
 
-    <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/rg_color"
+    <!-- Two rows of colors: each row is a horizontal LinearLayout with 3 equally-weighted RadioButtons -->
+    <LinearLayout
+        android:id="@+id/ll_colors_row1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="2"
         android:orientation="horizontal"
-        android:useDefaultMargins="true">
+        android:weightSum="3"
+        android:layout_marginTop="8dp">
+
         <RadioButton
             android:id="@+id/rb_red"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/color_red" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/color_red"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
+
         <RadioButton
             android:id="@+id/rb_green"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/color_green" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/color_green"
+            android:textColor="@color/green"
+            android:textStyle="bold" />
+
         <RadioButton
             android:id="@+id/rb_blue"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/color_blue" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/color_blue"
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_colors_row2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginTop="8dp">
+
         <RadioButton
             android:id="@+id/rb_yellow"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/color_yellow" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/color_yellow"
+            android:textColor="@color/yellow"
+            android:textStyle="bold" />
+
         <RadioButton
             android:id="@+id/rb_orange"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/color_orange" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/color_orange"
+            android:textColor="#FFA500"
+            android:textStyle="bold" />
+
         <RadioButton
             android:id="@+id/rb_purple"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/color_purple" />
-    </androidx.gridlayout.widget.GridLayout>
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/color_purple"
+            android:textColor="#FF00FF"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"

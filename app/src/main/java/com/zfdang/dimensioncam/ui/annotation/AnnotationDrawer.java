@@ -66,6 +66,9 @@ public class AnnotationDrawer {
             drawEndpoint(canvas, endX, endY, startX, startY, annotation.width * scaleFactor, arrowStyle);
 
             // Draw text
+            // Set text color to match annotation color
+            textPaint.setColor(annotation.color);
+
             // Show value and ID (1-based index) if requested
             String unitString = context.getString(Annotation.getUnitStringResource(annotation.unit));
             String text;

@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -227,7 +228,12 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
     private void showPropertiesDialog(Annotation annotation) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_annotation_properties, null);
         EditText etDistance = view.findViewById(R.id.et_distance);
-        RadioGroup rgColor = view.findViewById(R.id.rg_color);
+        RadioButton rbRed = view.findViewById(R.id.rb_red);
+        RadioButton rbGreen = view.findViewById(R.id.rb_green);
+        RadioButton rbBlue = view.findViewById(R.id.rb_blue);
+        RadioButton rbYellow = view.findViewById(R.id.rb_yellow);
+        RadioButton rbOrange = view.findViewById(R.id.rb_orange);
+        RadioButton rbPurple = view.findViewById(R.id.rb_purple);
         RadioGroup rgUnit = view.findViewById(R.id.rg_unit);
         SeekBar sbWidth = view.findViewById(R.id.sb_width);
 
@@ -238,11 +244,35 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
             }
         });
         
-        if (annotation.color == Color.RED) rgColor.check(R.id.rb_red);
-        else if (annotation.color == Color.GREEN) rgColor.check(R.id.rb_green);
-        else if (annotation.color == Color.BLUE) rgColor.check(R.id.rb_blue);
-        else if (annotation.color == Color.YELLOW) rgColor.check(R.id.rb_yellow);
-        else rgColor.check(R.id.rb_red); // Default
+        // Track selected color id in a mutable container for listeners
+        final int[] selectedColorId = new int[]{R.id.rb_red};
+
+        // Initialize selection based on annotation.color
+        if (annotation.color == Color.RED) { rbRed.setChecked(true); selectedColorId[0] = R.id.rb_red; }
+        else if (annotation.color == Color.GREEN) { rbGreen.setChecked(true); selectedColorId[0] = R.id.rb_green; }
+        else if (annotation.color == Color.BLUE) { rbBlue.setChecked(true); selectedColorId[0] = R.id.rb_blue; }
+        else if (annotation.color == Color.YELLOW) { rbYellow.setChecked(true); selectedColorId[0] = R.id.rb_yellow; }
+        else if (annotation.color == Color.parseColor("#FFA500")) { rbOrange.setChecked(true); selectedColorId[0] = R.id.rb_orange; }
+        else if (annotation.color == Color.MAGENTA) { rbPurple.setChecked(true); selectedColorId[0] = R.id.rb_purple; }
+        else { rbRed.setChecked(true); selectedColorId[0] = R.id.rb_red; } // Default
+
+        // Ensure single-selection: clicking one radio will uncheck others
+        View.OnClickListener colorClick = v -> {
+            int id = v.getId();
+            rbRed.setChecked(id == R.id.rb_red);
+            rbGreen.setChecked(id == R.id.rb_green);
+            rbBlue.setChecked(id == R.id.rb_blue);
+            rbYellow.setChecked(id == R.id.rb_yellow);
+            rbOrange.setChecked(id == R.id.rb_orange);
+            rbPurple.setChecked(id == R.id.rb_purple);
+            selectedColorId[0] = id;
+        };
+        rbRed.setOnClickListener(colorClick);
+        rbGreen.setOnClickListener(colorClick);
+        rbBlue.setOnClickListener(colorClick);
+        rbYellow.setOnClickListener(colorClick);
+        rbOrange.setOnClickListener(colorClick);
+        rbPurple.setOnClickListener(colorClick);
 
         if (annotation.unit == Annotation.UNIT_MM) rgUnit.check(R.id.rb_mm);
         else if (annotation.unit == Annotation.UNIT_CM) rgUnit.check(R.id.rb_cm);
@@ -263,11 +293,13 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
                         // ignore
                     }
 
-                    int id = rgColor.getCheckedRadioButtonId();
+                    int id = selectedColorId[0];
                     if (id == R.id.rb_red) annotation.color = Color.RED;
                     else if (id == R.id.rb_green) annotation.color = Color.GREEN;
                     else if (id == R.id.rb_blue) annotation.color = Color.BLUE;
                     else if (id == R.id.rb_yellow) annotation.color = Color.YELLOW;
+                    else if (id == R.id.rb_orange) annotation.color = Color.parseColor("#FFA500");
+                    else if (id == R.id.rb_purple) annotation.color = Color.MAGENTA;
 
                     int unitId = rgUnit.getCheckedRadioButtonId();
                     if (unitId == R.id.rb_mm) annotation.unit = Annotation.UNIT_MM;
