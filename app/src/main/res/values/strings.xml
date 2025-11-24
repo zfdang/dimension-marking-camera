@@ -13,6 +13,7 @@
     <string name="source_gallery">Gallery</string>
     <string name="annotation_count">%d annotations</string>
     <string name="action_export">Export</string>
+    <string name="hint_select_photo">Please select a photo from the photos list to annotate...</string>
     
     <!-- Annotation Tab -->
     <string name="action_undo">Undo</string>

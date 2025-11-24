@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
             else if (!settingsFragment.isHidden()) activeFragment = settingsFragment;
         }
 
+        // Set initial title
+        updateActionBarTitle();
+
         navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -67,19 +70,38 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.navigation_photos) {
                     fm.beginTransaction().hide(activeFragment).show(photosFragment).commit();
                     activeFragment = photosFragment;
+                    updateActionBarTitle();
+                    invalidateOptionsMenu();
                     return true;
                 } else if (itemId == R.id.navigation_annotation) {
                     fm.beginTransaction().hide(activeFragment).show(annotationFragment).commit();
                     activeFragment = annotationFragment;
+                    updateActionBarTitle();
+                    invalidateOptionsMenu();
                     return true;
                 } else if (itemId == R.id.navigation_settings) {
                     fm.beginTransaction().hide(activeFragment).show(settingsFragment).commit();
                     activeFragment = settingsFragment;
+                    updateActionBarTitle();
+                    invalidateOptionsMenu();
                     return true;
                 }
                 return false;
             }
         });
+    }
+
+    private void updateActionBarTitle() {
+        if (getSupportActionBar() != null) {
+            String appName = getString(R.string.app_name);
+            if (activeFragment == photosFragment) {
+                getSupportActionBar().setTitle(appName + " - " + getString(R.string.title_photos));
+            } else if (activeFragment == annotationFragment) {
+                getSupportActionBar().setTitle(appName + " - " + getString(R.string.title_annotation));
+            } else if (activeFragment == settingsFragment) {
+                getSupportActionBar().setTitle(appName + " - " + getString(R.string.title_settings));
+            }
+        }
     }
     
     public void navigateToAnnotation(long photoId) {

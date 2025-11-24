@@ -13,6 +13,7 @@
     <string name="source_gallery">相册</string>
     <string name="annotation_count">%d 个标注</string>
     <string name="action_export">导出</string>
+    <string name="hint_select_photo">请在照片列表里点击需要标注的照片...</string>
     
     <!-- Annotation Tab -->
     <string name="action_undo">撤销</string>

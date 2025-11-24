@@ -15,6 +15,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -29,7 +32,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.zfdang.dimensioncam.R;
 import com.zfdang.dimensioncam.data.Annotation;
 import com.zfdang.dimensioncam.data.AppDatabase;
@@ -82,6 +85,12 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
             }
     );
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,10 +107,22 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
             adapter.setPhotos(photos);
         });
 
-        FloatingActionButton fab = view.findViewById(R.id.fab_add_photo);
-        fab.setOnClickListener(v -> showAddPhotoDialog());
-
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_photos, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add_photo) {
+            showAddPhotoDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =

@@ -4,13 +4,16 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +38,13 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
     private DrawView drawView;
     private RecyclerView recyclerView;
     private AnnotationListAdapter adapter;
-    private Button btnUndo;
+    private TextView emptyHint;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -46,6 +55,8 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
         drawView = view.findViewById(R.id.draw_view);
         drawView.setPhotoView(photoView);
         drawView.setListener(this);
+
+        emptyHint = view.findViewById(R.id.tv_empty_hint);
 
         recyclerView = view.findViewById(R.id.rv_annotations);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -77,14 +88,12 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        btnUndo = view.findViewById(R.id.btn_undo);
-        btnUndo.setOnClickListener(v -> viewModel.undo());
-
-        view.findViewById(R.id.fab_add_annotation).setOnClickListener(v -> addNewAnnotation());
-
         viewModel = new ViewModelProvider(this).get(AnnotationViewModel.class);
         viewModel.getCurrentPhoto().observe(getViewLifecycleOwner(), photo -> {
             if (photo != null) {
+                emptyHint.setVisibility(View.GONE);
+                photoView.setVisibility(View.VISIBLE);
+                drawView.setVisibility(View.VISIBLE);
                 Glide.with(this)
                     .load(photo.originalPath)
                     .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
@@ -100,19 +109,51 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
                         }
                     })
                     .into(photoView);
+            } else {
+                emptyHint.setVisibility(View.VISIBLE);
+                photoView.setVisibility(View.GONE);
+                drawView.setVisibility(View.GONE);
             }
         });
 
         viewModel.getAnnotations().observe(getViewLifecycleOwner(), annotations -> {
             drawView.setAnnotations(annotations);
             adapter.setAnnotations(annotations);
-            btnUndo.setEnabled(viewModel.canUndo());
+            getActivity().invalidateOptionsMenu(); // Update undo button state
         });
         
         // PhotoView zoom listener to invalidate DrawView
         photoView.setOnMatrixChangeListener(rect -> drawView.invalidate());
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_annotation, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem undoItem = menu.findItem(R.id.action_undo);
+        if (undoItem != null && viewModel != null) {
+            undoItem.setEnabled(viewModel.canUndo());
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_add_annotation) {
+            addNewAnnotation();
+            return true;
+        } else if (itemId == R.id.action_undo) {
+            viewModel.undo();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void loadPhoto(long photoId) {
