@@ -1,5 +1,6 @@
 package com.zfdang.dimensioncam.ui.annotation;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAd
         void onDeleteClick(Annotation annotation);
     }
 
-    public AnnotationListAdapter(OnAnnotationActionListener listener) {
+    public AnnotationListAdapter(Context context, OnAnnotationActionListener listener) {
         this.listener = listener;
     }
 
@@ -48,7 +49,17 @@ public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Annotation annotation = annotations.get(position);
-        holder.tvValue.setText(String.format("%.1f", annotation.measuredValue));
+        String unit = holder.itemView.getContext().getString(Annotation.getUnitStringResource(annotation.unit));
+        
+        // ID (1-based index)
+        holder.tvId.setText(holder.itemView.getContext().getString(R.string.annotation_list_id, position + 1));
+        
+        // Length
+        holder.tvLength.setText(holder.itemView.getContext().getString(R.string.annotation_list_length, annotation.measuredValue, unit));
+        
+        // Width
+        holder.tvWidth.setText(holder.itemView.getContext().getString(R.string.annotation_list_width, annotation.width));
+        
         holder.colorIndicator.setBackgroundColor(annotation.color);
         
         holder.itemView.setOnClickListener(v -> listener.onAnnotationClick(annotation));
@@ -61,13 +72,17 @@ public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAd
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvValue;
+        TextView tvId;
+        TextView tvLength;
+        TextView tvWidth;
         View colorIndicator;
         ImageButton btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvValue = itemView.findViewById(R.id.tv_value);
+            tvId = itemView.findViewById(R.id.tv_id);
+            tvLength = itemView.findViewById(R.id.tv_length);
+            tvWidth = itemView.findViewById(R.id.tv_width);
             colorIndicator = itemView.findViewById(R.id.view_color);
             btnDelete = itemView.findViewById(R.id.btn_delete);
         }

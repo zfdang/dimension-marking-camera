@@ -14,16 +14,19 @@
     <string name="annotation_count">%d 个标注</string>
     <string name="action_export">导出</string>
     <string name="hint_select_photo">请在照片列表里点击需要标注的照片...</string>
+    <string name="hint_add_photo">点击右上角的+添加图片标注</string>
     
     <!-- Annotation Tab -->
     <string name="action_undo">撤销</string>
     <string name="action_add_annotation">添加标注</string>
-    <string name="dialog_annotation_properties">属性</string>
+    <string name="dialog_annotation_properties">标注属性</string>
     <string name="label_distance">距离</string>
     <string name="label_color">颜色</string>
-    <string name="label_width">宽度</string>
+    <string name="label_width">线宽</string>
+    <string name="pref_unit">单位</string>
     <string name="unit_mm">毫米</string>
     <string name="unit_cm">厘米</string>
+    <string name="unit_dm">分米</string>
     <string name="unit_m">米</string>
     
     <!-- Settings Tab -->
@@ -38,4 +41,9 @@
     <string name="pref_author">作者</string>
     <string name="msg_saved_to_gallery">图片已保存到相册</string>
     <string name="error_save_failed">保存失败</string>
+
+    <!-- Annotation List Item Formats -->
+    <string name="annotation_list_id">#%d,</string>
+    <string name="annotation_list_length">距离: %.0f %s,</string>
+    <string name="annotation_list_width">线宽: %.0f</string>
 </resources>

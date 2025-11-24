@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -57,6 +58,7 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
     private PhotoAdapter adapter;
     private Uri currentPhotoUri;
     private SettingsManager settingsManager;
+    private TextView emptyHint;
 
     private final ActivityResultLauncher<Intent> takePictureLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -98,6 +100,8 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
         settingsManager = new SettingsManager(getContext());
 
         recyclerView = view.findViewById(R.id.rv_photos);
+        emptyHint = view.findViewById(R.id.tv_empty_hint);
+        
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PhotoAdapter(getContext(), this);
         recyclerView.setAdapter(adapter);
@@ -105,6 +109,13 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
         photosViewModel = new ViewModelProvider(this).get(PhotosViewModel.class);
         photosViewModel.getAllPhotos().observe(getViewLifecycleOwner(), photos -> {
             adapter.setPhotos(photos);
+            if (photos == null || photos.isEmpty()) {
+                emptyHint.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                emptyHint.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
         });
 
         return view;
@@ -235,7 +246,7 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
         List<Annotation> annotations = AppDatabase.getDatabase(getContext()).annotationDao().getAnnotationsForPhotoSync(photo.id);
         
         // 4. Draw
-        AnnotationDrawer drawer = new AnnotationDrawer();
+        AnnotationDrawer drawer = new AnnotationDrawer(getContext());
         RectF rect = new RectF(0, 0, resultBitmap.getWidth(), resultBitmap.getHeight());
         int arrowStyle = settingsManager.getArrowStyle();
         
@@ -244,7 +255,7 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
         float scaleFactor = resultBitmap.getWidth() / 1080f;
         if (scaleFactor < 1f) scaleFactor = 1f;
 
-        drawer.draw(canvas, annotations, rect, arrowStyle, false, scaleFactor);
+        drawer.draw(canvas, annotations, rect, arrowStyle, false, scaleFactor, false);
 
         // 5. Save to Gallery
         saveBitmapToGallery(resultBitmap);

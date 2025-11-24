@@ -1,5 +1,6 @@
 package com.zfdang.dimensioncam.ui.annotation;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,11 +13,13 @@ import java.util.List;
 
 public class AnnotationDrawer {
 
+    private Context context;
     private Paint paint;
     private Paint textPaint;
     private Paint controlPointPaint;
 
-    public AnnotationDrawer() {
+    public AnnotationDrawer(Context context) {
+        this.context = context;
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
@@ -36,7 +39,7 @@ public class AnnotationDrawer {
         controlPointPaint.setAlpha(150);
     }
 
-    public void draw(Canvas canvas, List<Annotation> annotations, RectF rect, int arrowStyle, boolean drawControlPoints, float scaleFactor) {
+    public void draw(Canvas canvas, List<Annotation> annotations, RectF rect, int arrowStyle, boolean drawControlPoints, float scaleFactor, boolean showId) {
         // Scale text size and stroke width based on image size (for export)
         // scaleFactor = 1.0 for screen view, > 1.0 for high-res export
         
@@ -63,10 +66,45 @@ public class AnnotationDrawer {
             drawEndpoint(canvas, endX, endY, startX, startY, annotation.width * scaleFactor, arrowStyle);
 
             // Draw text
-            String text = String.format("%.1f", annotation.measuredValue);
+            // Show value and ID (1-based index) if requested
+            String unitString = context.getString(Annotation.getUnitStringResource(annotation.unit));
+            String text;
+            if (showId) {
+                int index = annotations.indexOf(annotation);
+                text = String.format("%.0f %s (#%d)", annotation.measuredValue, unitString, index + 1);
+            } else {
+                text = String.format("%.0f %s", annotation.measuredValue, unitString);
+            }
             float midX = (startX + endX) / 2;
             float midY = (startY + endY) / 2;
-            canvas.drawText(text, midX, midY - (20 * scaleFactor), textPaint);
+            
+            // Calculate angle
+            float deltaX = endX - startX;
+            float deltaY = endY - startY;
+            float angleDegrees = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
+            
+            // Keep text readable (not upside down)
+            if (angleDegrees > 90) {
+                angleDegrees -= 180;
+            } else if (angleDegrees < -90) {
+                angleDegrees += 180;
+            }
+            
+            canvas.save();
+            canvas.rotate(angleDegrees, midX, midY);
+            // Draw text centered at midX, midY, slightly above the line
+            // Align center is default for drawText? No, default is LEFT.
+            // Need to set align to CENTER in constructor or here.
+            // Let's check constructor. It doesn't set align.
+            // So we should set it here or in constructor.
+            // Let's assume we modify constructor or set it here.
+            // Ideally set it once. But let's set it here to be safe/clear or check constructor again.
+            // Constructor: textPaint.setStyle(Paint.Style.FILL); textPaint.setTextSize(40); ...
+            // It does NOT set Align. Let's add it to constructor or set it here.
+            // Setting here is safer for this specific change.
+            textPaint.setTextAlign(Paint.Align.CENTER);
+            canvas.drawText(text, midX, midY - (10 * scaleFactor), textPaint);
+            canvas.restore();
 
             // Draw control points
             if (drawControlPoints) {

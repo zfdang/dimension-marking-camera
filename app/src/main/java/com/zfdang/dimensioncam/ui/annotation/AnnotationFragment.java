@@ -52,6 +52,7 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
         View view = inflater.inflate(R.layout.fragment_annotation, container, false);
 
         photoView = view.findViewById(R.id.photo_view);
+        photoView.setMaximumScale(6.0f); // Set max zoom to 600%
         drawView = view.findViewById(R.id.draw_view);
         drawView.setPhotoView(photoView);
         drawView.setListener(this);
@@ -60,7 +61,7 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
 
         recyclerView = view.findViewById(R.id.rv_annotations);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AnnotationListAdapter(this);
+        adapter = new AnnotationListAdapter(getContext(), this);
         recyclerView.setAdapter(adapter);
 
         // Drag and drop
@@ -165,8 +166,41 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
     private void addNewAnnotation() {
         if (viewModel.getCurrentPhoto().getValue() == null) return;
         long photoId = viewModel.getCurrentPhoto().getValue().id;
-        // Default center
-        Annotation annotation = new Annotation(photoId, 0.2f, 0.5f, 0.8f, 0.5f, 0f, Color.RED, 5f, adapter.getItemCount());
+        
+        // Get the display rect from PhotoView
+        android.graphics.RectF displayRect = photoView.getDisplayRect();
+        
+        if (displayRect == null) {
+            // Fallback to default if PhotoView not ready
+            Annotation annotation = new Annotation(photoId, 0.1f, 0.5f, 0.9f, 0.5f, 0f, Color.RED, 5f, adapter.getItemCount(), Annotation.UNIT_MM);
+            viewModel.addAnnotation(annotation);
+            return;
+        }
+        
+        // Calculate screen positions based on the PhotoView's visible area (Screen dimensions)
+        int viewWidth = photoView.getWidth();
+        int viewHeight = photoView.getHeight();
+        
+        // Target: Center of the screen, 80% of screen width
+        float screenCenterY = viewHeight / 2f;
+        float screenStartX = viewWidth * 0.1f;  // 10% from screen left
+        float screenEndX = viewWidth * 0.9f;    // 90% from screen left
+        
+        // Convert screen coordinates to normalized (0-1) image coordinates
+        // Formula: Normalized = (Screen - ImageOffset) / ImageSize
+        float startX = (screenStartX - displayRect.left) / displayRect.width();
+        float startY = (screenCenterY - displayRect.top) / displayRect.height();
+        float endX = (screenEndX - displayRect.left) / displayRect.width();
+        float endY = (screenCenterY - displayRect.top) / displayRect.height();
+        
+        // Clamp to valid range (0-1) to ensure annotation stays within the image
+        startX = Math.max(0f, Math.min(1f, startX));
+        startY = Math.max(0f, Math.min(1f, startY));
+        endX = Math.max(0f, Math.min(1f, endX));
+        endY = Math.max(0f, Math.min(1f, endY));
+        
+        // Default unit is mm (UNIT_MM = 0)
+        Annotation annotation = new Annotation(photoId, startX, startY, endX, endY, 0f, Color.RED, 5f, adapter.getItemCount(), Annotation.UNIT_MM);
         viewModel.addAnnotation(annotation);
     }
 
@@ -194,15 +228,27 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_annotation_properties, null);
         EditText etDistance = view.findViewById(R.id.et_distance);
         RadioGroup rgColor = view.findViewById(R.id.rg_color);
+        RadioGroup rgUnit = view.findViewById(R.id.rg_unit);
         SeekBar sbWidth = view.findViewById(R.id.sb_width);
 
-        etDistance.setText(String.valueOf(annotation.measuredValue));
+        etDistance.setText(String.format("%.0f", annotation.measuredValue));
+        etDistance.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                etDistance.selectAll();
+            }
+        });
         
         if (annotation.color == Color.RED) rgColor.check(R.id.rb_red);
         else if (annotation.color == Color.GREEN) rgColor.check(R.id.rb_green);
         else if (annotation.color == Color.BLUE) rgColor.check(R.id.rb_blue);
         else if (annotation.color == Color.YELLOW) rgColor.check(R.id.rb_yellow);
         else rgColor.check(R.id.rb_red); // Default
+
+        if (annotation.unit == Annotation.UNIT_MM) rgUnit.check(R.id.rb_mm);
+        else if (annotation.unit == Annotation.UNIT_CM) rgUnit.check(R.id.rb_cm);
+        else if (annotation.unit == Annotation.UNIT_DM) rgUnit.check(R.id.rb_dm);
+        else if (annotation.unit == Annotation.UNIT_M) rgUnit.check(R.id.rb_m);
+        else rgUnit.check(R.id.rb_mm); // Default
 
         sbWidth.setProgress((int) annotation.width);
 
@@ -222,6 +268,12 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
                     else if (id == R.id.rb_green) annotation.color = Color.GREEN;
                     else if (id == R.id.rb_blue) annotation.color = Color.BLUE;
                     else if (id == R.id.rb_yellow) annotation.color = Color.YELLOW;
+
+                    int unitId = rgUnit.getCheckedRadioButtonId();
+                    if (unitId == R.id.rb_mm) annotation.unit = Annotation.UNIT_MM;
+                    else if (unitId == R.id.rb_cm) annotation.unit = Annotation.UNIT_CM;
+                    else if (unitId == R.id.rb_dm) annotation.unit = Annotation.UNIT_DM;
+                    else if (unitId == R.id.rb_m) annotation.unit = Annotation.UNIT_M;
 
                     annotation.width = sbWidth.getProgress();
                     if (annotation.width < 1) annotation.width = 1;

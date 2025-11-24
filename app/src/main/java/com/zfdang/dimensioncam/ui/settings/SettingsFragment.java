@@ -62,11 +62,7 @@ public class SettingsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void openGitHubProject() {
-        String url = "https://github.com/zfdang/dimension-marking-camera";
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(intent);
-    }
+    // ... existing methods ...
 
     private void updateUI() {
         int style = settingsManager.getArrowStyle();
@@ -105,5 +101,11 @@ public class SettingsFragment extends Fragment {
                     }
                 })
                 .show();
+    }
+
+    private void openGitHubProject() {
+        String url = "https://github.com/zfdang/dimension-marking-camera";
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 }

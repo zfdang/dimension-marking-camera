@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Photo.class, Annotation.class}, version = 1, exportSchema = false)
+@Database(entities = {Photo.class, Annotation.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract PhotoDao photoDao();
@@ -26,6 +26,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "dimension_cam_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

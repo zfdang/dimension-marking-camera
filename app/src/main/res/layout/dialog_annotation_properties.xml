@@ -14,8 +14,25 @@
         android:id="@+id/et_distance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal" />
+        android:inputType="number" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/pref_unit" />
+
+    <RadioGroup
+        android:id="@+id/rg_unit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/rb_mm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/unit_mm" />
+        <RadioButton android:id="@+id/rb_cm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/unit_cm" />
+        <RadioButton android:id="@+id/rb_dm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/unit_dm" />
+        <RadioButton android:id="@+id/rb_m" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/unit_m" />
+    </RadioGroup>
+    
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,6 +49,8 @@
         <RadioButton android:id="@+id/rb_blue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Blue" />
         <RadioButton android:id="@+id/rb_yellow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yellow" />
     </RadioGroup>
+
+
 
     <TextView
         android:layout_width="wrap_content"

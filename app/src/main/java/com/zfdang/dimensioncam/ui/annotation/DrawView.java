@@ -45,7 +45,7 @@ public class DrawView extends View {
 
     private void init(Context context) {
         settingsManager = new SettingsManager(context);
-        drawer = new AnnotationDrawer();
+        drawer = new AnnotationDrawer(context);
     }
 
     public void setPhotoView(PhotoView photoView) {
@@ -70,7 +70,7 @@ public class DrawView extends View {
         if (displayRect == null) return;
         
         int arrowStyle = settingsManager.getArrowStyle();
-        drawer.draw(canvas, annotations, displayRect, arrowStyle, true, 1.0f);
+        drawer.draw(canvas, annotations, displayRect, arrowStyle, true, 1.0f, true);
     }
 
     // Interaction logic remains the same, need to duplicate mapping logic or expose it from Drawer?

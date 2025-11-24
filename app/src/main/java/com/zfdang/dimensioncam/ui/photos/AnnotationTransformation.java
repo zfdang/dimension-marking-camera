@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AnnotationTransformation extends BitmapTransformation {
 
-    private static final String ID = "com.zfdang.dimensioncam.ui.photos.AnnotationTransformation";
+    private static final String ID = "com.zfdang.dimensioncam.ui.photos.AnnotationTransformation.v2";
     private static final byte[] ID_BYTES = ID.getBytes(CHARSET);
 
     private final List<Annotation> annotations;
@@ -27,8 +27,9 @@ public class AnnotationTransformation extends BitmapTransformation {
 
     public AnnotationTransformation(Context context, List<Annotation> annotations) {
         this.annotations = annotations;
-        this.arrowStyle = new SettingsManager(context).getArrowStyle();
-        this.drawer = new AnnotationDrawer();
+        SettingsManager settingsManager = new SettingsManager(context);
+        this.arrowStyle = settingsManager.getArrowStyle();
+        this.drawer = new AnnotationDrawer(context);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class AnnotationTransformation extends BitmapTransformation {
         // Or just use 1.0f and let it be small. 
         // Let's try 1.0f first.
         
-        drawer.draw(canvas, annotations, rect, arrowStyle, false, 1.0f);
+        drawer.draw(canvas, annotations, rect, arrowStyle, false, 1.0f, false);
         
         return result;
     }
@@ -79,5 +80,7 @@ public class AnnotationTransformation extends BitmapTransformation {
         messageDigest.update(ID_BYTES);
         // We should also include annotations hash in cache key so it updates when annotations change
         messageDigest.update(String.valueOf(annotations.hashCode()).getBytes(CHARSET));
+        // Include locale in cache key to support language changes
+        messageDigest.update(java.util.Locale.getDefault().toString().getBytes(CHARSET));
     }
 }
