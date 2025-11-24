@@ -34,6 +34,12 @@
     <string name="style_arrow">箭头</string>
     <string name="style_t_shape">T型</string>
     <string name="style_dot">圆点</string>
+    <string name="color_red">红色</string>
+    <string name="color_green">绿色</string>
+    <string name="color_blue">蓝色</string>
+    <string name="color_yellow">黄色</string>
+    <string name="color_orange">橙色</string>
+    <string name="color_purple">紫色</string>    
     <string name="pref_language">语言</string>
     <string name="pref_about">关于</string>
     <string name="pref_version">版本</string>
