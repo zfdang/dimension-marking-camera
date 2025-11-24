@@ -11,6 +11,8 @@
     <string name="confirm_delete_message">This will remove the photo from the app but keep the original file.</string>
     <string name="source_camera">Camera</string>
     <string name="source_gallery">Gallery</string>
+    <string name="annotation_count">%d annotations</string>
+    <string name="action_export">Export</string>
     
     <!-- Annotation Tab -->
     <string name="action_undo">Undo</string>

@@ -11,6 +11,8 @@
     <string name="confirm_delete_message">这将从应用中移除照片，但保留原始文件。</string>
     <string name="source_camera">拍照</string>
     <string name="source_gallery">相册</string>
+    <string name="annotation_count">%d 个标注</string>
+    <string name="action_export">导出</string>
     
     <!-- Annotation Tab -->
     <string name="action_undo">撤销</string>
