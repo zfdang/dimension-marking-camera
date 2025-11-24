@@ -32,7 +32,8 @@ import com.zfdang.dimensioncam.data.Annotation;
 import java.util.Collections;
 import java.util.List;
 
-public class AnnotationFragment extends Fragment implements AnnotationListAdapter.OnAnnotationActionListener, DrawView.OnAnnotationChangeListener {
+public class AnnotationFragment extends Fragment
+        implements AnnotationListAdapter.OnAnnotationActionListener, DrawView.OnAnnotationChangeListener {
 
     private AnnotationViewModel viewModel;
     private PhotoView photoView;
@@ -49,7 +50,8 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_annotation, container, false);
 
         photoView = view.findViewById(R.id.photo_view);
@@ -62,32 +64,35 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
 
         recyclerView = view.findViewById(R.id.rv_annotations);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new AnnotationListAdapter(getContext(), this);
+        adapter = new AnnotationListAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // Drag and drop
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                int fromPos = viewHolder.getAdapterPosition();
-                int toPos = target.getAdapterPosition();
-                List<Annotation> list = adapter.getAnnotations();
-                Collections.swap(list, fromPos, toPos);
-                adapter.notifyItemMoved(fromPos, toPos);
-                return true;
-            }
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView,
+                            @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                        int fromPos = viewHolder.getAdapterPosition();
+                        int toPos = target.getAdapterPosition();
+                        List<Annotation> list = adapter.getAnnotations();
+                        Collections.swap(list, fromPos, toPos);
+                        adapter.notifyItemMoved(fromPos, toPos);
+                        return true;
+                    }
 
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                // No swipe to delete
-            }
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        // No swipe to delete
+                    }
 
-            @Override
-            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                super.clearView(recyclerView, viewHolder);
-                viewModel.reorderAnnotations(adapter.getAnnotations());
-            }
-        });
+                    @Override
+                    public void clearView(@NonNull RecyclerView recyclerView,
+                            @NonNull RecyclerView.ViewHolder viewHolder) {
+                        super.clearView(recyclerView, viewHolder);
+                        viewModel.reorderAnnotations(adapter.getAnnotations());
+                    }
+                });
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         viewModel = new ViewModelProvider(this).get(AnnotationViewModel.class);
@@ -97,20 +102,25 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
                 photoView.setVisibility(View.VISIBLE);
                 drawView.setVisibility(View.VISIBLE);
                 Glide.with(this)
-                    .load(photo.originalPath)
-                    .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable com.bumptech.glide.load.engine.GlideException e, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
-                            return false;
-                        }
+                        .load(photo.originalPath)
+                        .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable com.bumptech.glide.load.engine.GlideException e,
+                                    Object model,
+                                    com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target,
+                                    boolean isFirstResource) {
+                                return false;
+                            }
 
-                        @Override
-                        public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
-                            drawView.post(() -> drawView.invalidate());
-                            return false;
-                        }
-                    })
-                    .into(photoView);
+                            @Override
+                            public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model,
+                                    com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target,
+                                    com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
+                                drawView.post(() -> drawView.invalidate());
+                                return false;
+                            }
+                        })
+                        .into(photoView);
             } else {
                 emptyHint.setVisibility(View.VISIBLE);
                 photoView.setVisibility(View.GONE);
@@ -121,9 +131,11 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
         viewModel.getAnnotations().observe(getViewLifecycleOwner(), annotations -> {
             drawView.setAnnotations(annotations);
             adapter.setAnnotations(annotations);
-            getActivity().invalidateOptionsMenu(); // Update undo button state
+            if (getActivity() != null) {
+                getActivity().invalidateOptionsMenu(); // Update undo button state
+            }
         });
-        
+
         // PhotoView zoom listener to invalidate DrawView
         photoView.setOnMatrixChangeListener(rect -> drawView.invalidate());
 
@@ -165,43 +177,47 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
     }
 
     private void addNewAnnotation() {
-        if (viewModel.getCurrentPhoto().getValue() == null) return;
+        if (viewModel.getCurrentPhoto().getValue() == null)
+            return;
         long photoId = viewModel.getCurrentPhoto().getValue().id;
-        
+
         // Get the display rect from PhotoView
         android.graphics.RectF displayRect = photoView.getDisplayRect();
-        
+
         if (displayRect == null) {
             // Fallback to default if PhotoView not ready
-            Annotation annotation = new Annotation(photoId, 0.1f, 0.5f, 0.9f, 0.5f, 0f, Color.RED, 5f, adapter.getItemCount(), Annotation.UNIT_MM);
+            Annotation annotation = new Annotation(photoId, 0.1f, 0.5f, 0.9f, 0.5f, 0f, Color.RED, 5f,
+                    adapter.getItemCount(), Annotation.UNIT_MM);
             viewModel.addAnnotation(annotation);
             return;
         }
-        
-        // Calculate screen positions based on the PhotoView's visible area (Screen dimensions)
+
+        // Calculate screen positions based on the PhotoView's visible area (Screen
+        // dimensions)
         int viewWidth = photoView.getWidth();
         int viewHeight = photoView.getHeight();
-        
+
         // Target: Center of the screen, 80% of screen width
         float screenCenterY = viewHeight / 2f;
-        float screenStartX = viewWidth * 0.1f;  // 10% from screen left
-        float screenEndX = viewWidth * 0.9f;    // 90% from screen left
-        
+        float screenStartX = viewWidth * 0.1f; // 10% from screen left
+        float screenEndX = viewWidth * 0.9f; // 90% from screen left
+
         // Convert screen coordinates to normalized (0-1) image coordinates
         // Formula: Normalized = (Screen - ImageOffset) / ImageSize
         float startX = (screenStartX - displayRect.left) / displayRect.width();
         float startY = (screenCenterY - displayRect.top) / displayRect.height();
         float endX = (screenEndX - displayRect.left) / displayRect.width();
         float endY = (screenCenterY - displayRect.top) / displayRect.height();
-        
+
         // Clamp to valid range (0-1) to ensure annotation stays within the image
         startX = Math.max(0f, Math.min(1f, startX));
         startY = Math.max(0f, Math.min(1f, startY));
         endX = Math.max(0f, Math.min(1f, endX));
         endY = Math.max(0f, Math.min(1f, endY));
-        
+
         // Default unit is mm (UNIT_MM = 0)
-        Annotation annotation = new Annotation(photoId, startX, startY, endX, endY, 0f, Color.RED, 5f, adapter.getItemCount(), Annotation.UNIT_MM);
+        Annotation annotation = new Annotation(photoId, startX, startY, endX, endY, 0f, Color.RED, 5f,
+                adapter.getItemCount(), Annotation.UNIT_MM);
         viewModel.addAnnotation(annotation);
     }
 
@@ -243,18 +259,33 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
                 etDistance.selectAll();
             }
         });
-        
+
         // Track selected color id in a mutable container for listeners
-        final int[] selectedColorId = new int[]{R.id.rb_red};
+        final int[] selectedColorId = new int[] { R.id.rb_red };
 
         // Initialize selection based on annotation.color
-        if (annotation.color == Color.RED) { rbRed.setChecked(true); selectedColorId[0] = R.id.rb_red; }
-        else if (annotation.color == Color.GREEN) { rbGreen.setChecked(true); selectedColorId[0] = R.id.rb_green; }
-        else if (annotation.color == Color.BLUE) { rbBlue.setChecked(true); selectedColorId[0] = R.id.rb_blue; }
-        else if (annotation.color == Color.YELLOW) { rbYellow.setChecked(true); selectedColorId[0] = R.id.rb_yellow; }
-        else if (annotation.color == Color.parseColor("#FFA500")) { rbOrange.setChecked(true); selectedColorId[0] = R.id.rb_orange; }
-        else if (annotation.color == Color.MAGENTA) { rbPurple.setChecked(true); selectedColorId[0] = R.id.rb_purple; }
-        else { rbRed.setChecked(true); selectedColorId[0] = R.id.rb_red; } // Default
+        if (annotation.color == Color.RED) {
+            rbRed.setChecked(true);
+            selectedColorId[0] = R.id.rb_red;
+        } else if (annotation.color == Color.GREEN) {
+            rbGreen.setChecked(true);
+            selectedColorId[0] = R.id.rb_green;
+        } else if (annotation.color == Color.BLUE) {
+            rbBlue.setChecked(true);
+            selectedColorId[0] = R.id.rb_blue;
+        } else if (annotation.color == Color.YELLOW) {
+            rbYellow.setChecked(true);
+            selectedColorId[0] = R.id.rb_yellow;
+        } else if (annotation.color == Color.parseColor("#FFA500")) {
+            rbOrange.setChecked(true);
+            selectedColorId[0] = R.id.rb_orange;
+        } else if (annotation.color == Color.MAGENTA) {
+            rbPurple.setChecked(true);
+            selectedColorId[0] = R.id.rb_purple;
+        } else {
+            rbRed.setChecked(true);
+            selectedColorId[0] = R.id.rb_red;
+        } // Default
 
         // Ensure single-selection: clicking one radio will uncheck others
         View.OnClickListener colorClick = v -> {
@@ -274,11 +305,16 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
         rbOrange.setOnClickListener(colorClick);
         rbPurple.setOnClickListener(colorClick);
 
-        if (annotation.unit == Annotation.UNIT_MM) rgUnit.check(R.id.rb_mm);
-        else if (annotation.unit == Annotation.UNIT_CM) rgUnit.check(R.id.rb_cm);
-        else if (annotation.unit == Annotation.UNIT_DM) rgUnit.check(R.id.rb_dm);
-        else if (annotation.unit == Annotation.UNIT_M) rgUnit.check(R.id.rb_m);
-        else rgUnit.check(R.id.rb_mm); // Default
+        if (annotation.unit == Annotation.UNIT_MM)
+            rgUnit.check(R.id.rb_mm);
+        else if (annotation.unit == Annotation.UNIT_CM)
+            rgUnit.check(R.id.rb_cm);
+        else if (annotation.unit == Annotation.UNIT_DM)
+            rgUnit.check(R.id.rb_dm);
+        else if (annotation.unit == Annotation.UNIT_M)
+            rgUnit.check(R.id.rb_m);
+        else
+            rgUnit.check(R.id.rb_mm); // Default
 
         sbWidth.setProgress((int) annotation.width);
 
@@ -294,21 +330,32 @@ public class AnnotationFragment extends Fragment implements AnnotationListAdapte
                     }
 
                     int id = selectedColorId[0];
-                    if (id == R.id.rb_red) annotation.color = Color.RED;
-                    else if (id == R.id.rb_green) annotation.color = Color.GREEN;
-                    else if (id == R.id.rb_blue) annotation.color = Color.BLUE;
-                    else if (id == R.id.rb_yellow) annotation.color = Color.YELLOW;
-                    else if (id == R.id.rb_orange) annotation.color = Color.parseColor("#FFA500");
-                    else if (id == R.id.rb_purple) annotation.color = Color.MAGENTA;
+                    if (id == R.id.rb_red)
+                        annotation.color = Color.RED;
+                    else if (id == R.id.rb_green)
+                        annotation.color = Color.GREEN;
+                    else if (id == R.id.rb_blue)
+                        annotation.color = Color.BLUE;
+                    else if (id == R.id.rb_yellow)
+                        annotation.color = Color.YELLOW;
+                    else if (id == R.id.rb_orange)
+                        annotation.color = Color.parseColor("#FFA500");
+                    else if (id == R.id.rb_purple)
+                        annotation.color = Color.MAGENTA;
 
                     int unitId = rgUnit.getCheckedRadioButtonId();
-                    if (unitId == R.id.rb_mm) annotation.unit = Annotation.UNIT_MM;
-                    else if (unitId == R.id.rb_cm) annotation.unit = Annotation.UNIT_CM;
-                    else if (unitId == R.id.rb_dm) annotation.unit = Annotation.UNIT_DM;
-                    else if (unitId == R.id.rb_m) annotation.unit = Annotation.UNIT_M;
+                    if (unitId == R.id.rb_mm)
+                        annotation.unit = Annotation.UNIT_MM;
+                    else if (unitId == R.id.rb_cm)
+                        annotation.unit = Annotation.UNIT_CM;
+                    else if (unitId == R.id.rb_dm)
+                        annotation.unit = Annotation.UNIT_DM;
+                    else if (unitId == R.id.rb_m)
+                        annotation.unit = Annotation.UNIT_M;
 
                     annotation.width = sbWidth.getProgress();
-                    if (annotation.width < 1) annotation.width = 1;
+                    if (annotation.width < 1)
+                        annotation.width = 1;
 
                     viewModel.updateAnnotation(annotation);
                 })

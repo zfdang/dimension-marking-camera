@@ -10,13 +10,11 @@ public class Repository {
 
     private PhotoDao mPhotoDao;
     private AnnotationDao mAnnotationDao;
-    private LiveData<List<Photo>> mAllPhotos;
 
     public Repository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         mPhotoDao = db.photoDao();
         mAnnotationDao = db.annotationDao();
-        mAllPhotos = mPhotoDao.getAllPhotos();
     }
 
     // Photo methods
@@ -44,7 +42,7 @@ public class Repository {
     public LiveData<List<Annotation>> getAnnotationsForPhoto(long photoId) {
         return mAnnotationDao.getAnnotationsForPhoto(photoId);
     }
-    
+
     public void insertAnnotation(Annotation annotation) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             mAnnotationDao.insert(annotation);
@@ -62,8 +60,9 @@ public class Repository {
             mAnnotationDao.delete(annotation);
         });
     }
-    
-    // For Undo/Redo or bulk updates, we might need to replace all annotations for a photo
+
+    // For Undo/Redo or bulk updates, we might need to replace all annotations for a
+    // photo
     public void replaceAnnotationsForPhoto(long photoId, List<Annotation> annotations) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             mAnnotationDao.deleteAllForPhoto(photoId);

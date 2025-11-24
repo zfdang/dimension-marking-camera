@@ -33,7 +33,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.zfdang.dimensioncam.R;
 import com.zfdang.dimensioncam.data.Annotation;
 import com.zfdang.dimensioncam.data.AppDatabase;
@@ -69,23 +68,24 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
                         photosViewModel.insert(photo);
                     }
                 }
-            }
-    );
+            });
 
     private final ActivityResultLauncher<String> pickImageLauncher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             uri -> {
                 if (uri != null) {
                     try {
-                         getContext().getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        getContext().getContentResolver().takePersistableUriPermission(uri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     } catch (SecurityException e) {
-                        // Ignore
+                        // This is expected for some content providers (e.g., Google Photos)
+                        // The URI will still work for one-time access
+                        android.util.Log.d("PhotosFragment", "Cannot persist URI permission: " + e.getMessage());
                     }
                     Photo photo = new Photo(uri.toString(), System.currentTimeMillis());
                     photosViewModel.insert(photo);
                 }
-            }
-    );
+            });
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,13 +95,14 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
         settingsManager = new SettingsManager(getContext());
 
         recyclerView = view.findViewById(R.id.rv_photos);
         emptyHint = view.findViewById(R.id.tv_empty_hint);
-        
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PhotoAdapter(getContext(), this);
         recyclerView.setAdapter(adapter);
@@ -136,17 +137,18 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
         return super.onOptionsItemSelected(item);
     }
 
-    private final ActivityResultLauncher<String> requestPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+    private final ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     dispatchTakePictureIntent();
                 } else {
-                    Toast.makeText(getContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT)
+                            .show();
                 }
             });
 
     private void showAddPhotoDialog() {
-        String[] options = {getString(R.string.source_camera), getString(R.string.source_gallery)};
+        String[] options = { getString(R.string.source_camera), getString(R.string.source_gallery) };
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.action_add_photo)
                 .setItems(options, (dialog, which) -> {
@@ -160,8 +162,8 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
     }
 
     private void checkCameraPermissionAndDispatch() {
-        if (androidx.core.content.ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA)
-                == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+        if (androidx.core.content.ContextCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.CAMERA) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
             dispatchTakePictureIntent();
         } else {
             requestPermissionLauncher.launch(android.Manifest.permission.CAMERA);
@@ -169,7 +171,6 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
     }
 
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (getContext() != null) {
             File photoFile = null;
             try {
@@ -223,7 +224,8 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
             } catch (Exception e) {
                 e.printStackTrace();
                 if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> Toast.makeText(getContext(), R.string.error_save_failed, Toast.LENGTH_SHORT).show());
+                    getActivity().runOnUiThread(
+                            () -> Toast.makeText(getContext(), R.string.error_save_failed, Toast.LENGTH_SHORT).show());
                 }
             }
         });
@@ -236,36 +238,40 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
         Bitmap originalBitmap = BitmapFactory.decodeStream(is);
         is.close();
 
-        if (originalBitmap == null) return;
+        if (originalBitmap == null)
+            return;
 
         // 2. Create mutable bitmap for drawing
         Bitmap resultBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(resultBitmap);
-        
+
         // 3. Get annotations
-        List<Annotation> annotations = AppDatabase.getDatabase(getContext()).annotationDao().getAnnotationsForPhotoSync(photo.id);
-        
+        List<Annotation> annotations = AppDatabase.getDatabase(getContext()).annotationDao()
+                .getAnnotationsForPhotoSync(photo.id);
+
         // 4. Draw
         AnnotationDrawer drawer = new AnnotationDrawer(getContext());
         RectF rect = new RectF(0, 0, resultBitmap.getWidth(), resultBitmap.getHeight());
         int arrowStyle = settingsManager.getArrowStyle();
-        
-        // Calculate scale factor relative to a "standard" screen width (e.g. 1080px)
+
+        // Calculate scale factor relative to a standard screen width
         // This ensures text/lines aren't tiny on high-res photos
-        float scaleFactor = resultBitmap.getWidth() / 1080f;
-        if (scaleFactor < 1f) scaleFactor = 1f;
+        float scaleFactor = resultBitmap.getWidth() / com.zfdang.dimensioncam.utils.Constants.STANDARD_SCREEN_WIDTH;
+        if (scaleFactor < 1f)
+            scaleFactor = 1f;
 
         drawer.draw(canvas, annotations, rect, arrowStyle, false, scaleFactor, false);
 
         // 5. Save to Gallery
         saveBitmapToGallery(resultBitmap);
-        
+
         // Cleanup
         originalBitmap.recycle();
         resultBitmap.recycle();
-        
+
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> Toast.makeText(getContext(), R.string.msg_saved_to_gallery, Toast.LENGTH_SHORT).show());
+            getActivity().runOnUiThread(
+                    () -> Toast.makeText(getContext(), R.string.msg_saved_to_gallery, Toast.LENGTH_SHORT).show());
         }
     }
 

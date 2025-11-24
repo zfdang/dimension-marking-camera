@@ -93,7 +93,7 @@
                 android:contentDescription="@string/action_delete"
                 android:padding="8dp"
                 android:src="@drawable/ic_delete"
-                app:tint="?android:attr/colorError" />
+                app:tint="#F44336" />
 
         </LinearLayout>
 

@@ -28,9 +28,10 @@ public class AnnotationDrawer {
         textPaint = new Paint();
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.WHITE);
-        textPaint.setTextSize(40);
+        textPaint.setTextSize(com.zfdang.dimensioncam.utils.Constants.BASE_TEXT_SIZE);
         textPaint.setStyle(Paint.Style.FILL);
-        textPaint.setShadowLayer(2, 0, 0, Color.BLACK);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setShadowLayer(com.zfdang.dimensioncam.utils.Constants.SHADOW_RADIUS, 0, 0, Color.BLACK);
 
         controlPointPaint = new Paint();
         controlPointPaint.setAntiAlias(true);
@@ -39,15 +40,17 @@ public class AnnotationDrawer {
         controlPointPaint.setAlpha(150);
     }
 
-    public void draw(Canvas canvas, List<Annotation> annotations, RectF rect, int arrowStyle, boolean drawControlPoints, float scaleFactor, boolean showId) {
+    public void draw(Canvas canvas, List<Annotation> annotations, RectF rect, int arrowStyle, boolean drawControlPoints,
+            float scaleFactor, boolean showId) {
         // Scale text size and stroke width based on image size (for export)
         // scaleFactor = 1.0 for screen view, > 1.0 for high-res export
-        
-        float originalTextSize = 40;
+
+        float originalTextSize = com.zfdang.dimensioncam.utils.Constants.BASE_TEXT_SIZE;
         textPaint.setTextSize(originalTextSize * scaleFactor);
-        textPaint.setShadowLayer(2 * scaleFactor, 0, 0, Color.BLACK);
-        
-        float controlRadius = 20f * scaleFactor;
+        textPaint.setShadowLayer(com.zfdang.dimensioncam.utils.Constants.SHADOW_RADIUS * scaleFactor, 0, 0,
+                Color.BLACK);
+
+        float controlRadius = com.zfdang.dimensioncam.utils.Constants.CONTROL_POINT_RADIUS * scaleFactor;
 
         for (Annotation annotation : annotations) {
             float startX = mapX(annotation.startX, rect);
@@ -80,32 +83,22 @@ public class AnnotationDrawer {
             }
             float midX = (startX + endX) / 2;
             float midY = (startY + endY) / 2;
-            
+
             // Calculate angle
             float deltaX = endX - startX;
             float deltaY = endY - startY;
             float angleDegrees = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
-            
+
             // Keep text readable (not upside down)
             if (angleDegrees > 90) {
                 angleDegrees -= 180;
             } else if (angleDegrees < -90) {
                 angleDegrees += 180;
             }
-            
+
             canvas.save();
             canvas.rotate(angleDegrees, midX, midY);
-            // Draw text centered at midX, midY, slightly above the line
-            // Align center is default for drawText? No, default is LEFT.
-            // Need to set align to CENTER in constructor or here.
-            // Let's check constructor. It doesn't set align.
-            // So we should set it here or in constructor.
-            // Let's assume we modify constructor or set it here.
-            // Ideally set it once. But let's set it here to be safe/clear or check constructor again.
-            // Constructor: textPaint.setStyle(Paint.Style.FILL); textPaint.setTextSize(40); ...
-            // It does NOT set Align. Let's add it to constructor or set it here.
-            // Setting here is safer for this specific change.
-            textPaint.setTextAlign(Paint.Align.CENTER);
+            // Draw text centered and slightly above the line
             canvas.drawText(text, midX, midY - (10 * scaleFactor), textPaint);
             canvas.restore();
 
@@ -115,7 +108,7 @@ public class AnnotationDrawer {
                 canvas.drawCircle(endX, endY, controlRadius, controlPointPaint);
             }
         }
-        
+
         // Reset text size
         textPaint.setTextSize(originalTextSize);
     }
@@ -123,7 +116,8 @@ public class AnnotationDrawer {
     private void drawEndpoint(Canvas canvas, float tipX, float tipY, float tailX, float tailY, float width, int style) {
         float angle = (float) Math.atan2(tailY - tipY, tailX - tipX);
         float size = width * 5;
-        if (size < 30) size = 30; // Minimum size
+        if (size < com.zfdang.dimensioncam.utils.Constants.MIN_ARROW_SIZE)
+            size = com.zfdang.dimensioncam.utils.Constants.MIN_ARROW_SIZE;
 
         if (style == SettingsManager.STYLE_ARROW) {
             float arrowAngle = (float) Math.toRadians(30);
@@ -135,10 +129,10 @@ public class AnnotationDrawer {
             canvas.drawLine(tipX, tipY, x2, y2, paint);
         } else if (style == SettingsManager.STYLE_T_SHAPE) {
             float tAngle = (float) Math.toRadians(90);
-            float x1 = (float) (tipX + Math.cos(angle + tAngle) * (size/2));
-            float y1 = (float) (tipY + Math.sin(angle + tAngle) * (size/2));
-            float x2 = (float) (tipX + Math.cos(angle - tAngle) * (size/2));
-            float y2 = (float) (tipY + Math.sin(angle - tAngle) * (size/2));
+            float x1 = (float) (tipX + Math.cos(angle + tAngle) * (size / 2));
+            float y1 = (float) (tipY + Math.sin(angle + tAngle) * (size / 2));
+            float x2 = (float) (tipX + Math.cos(angle - tAngle) * (size / 2));
+            float y2 = (float) (tipY + Math.sin(angle - tAngle) * (size / 2));
             canvas.drawLine(x1, y1, x2, y2, paint);
         } else if (style == SettingsManager.STYLE_DOT) {
             paint.setStyle(Paint.Style.FILL);

@@ -23,10 +23,11 @@ public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAd
 
     public interface OnAnnotationActionListener {
         void onAnnotationClick(Annotation annotation);
+
         void onDeleteClick(Annotation annotation);
     }
 
-    public AnnotationListAdapter(Context context, OnAnnotationActionListener listener) {
+    public AnnotationListAdapter(OnAnnotationActionListener listener) {
         this.listener = listener;
     }
 
@@ -34,7 +35,7 @@ public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAd
         this.annotations = annotations;
         notifyDataSetChanged();
     }
-    
+
     public List<Annotation> getAnnotations() {
         return annotations;
     }
@@ -50,18 +51,20 @@ public class AnnotationListAdapter extends RecyclerView.Adapter<AnnotationListAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Annotation annotation = annotations.get(position);
         String unit = holder.itemView.getContext().getString(Annotation.getUnitStringResource(annotation.unit));
-        
+
         // ID (1-based index)
         holder.tvId.setText(holder.itemView.getContext().getString(R.string.annotation_list_id, position + 1));
-        
+
         // Length
-        holder.tvLength.setText(holder.itemView.getContext().getString(R.string.annotation_list_length, annotation.measuredValue, unit));
-        
+        holder.tvLength.setText(holder.itemView.getContext().getString(R.string.annotation_list_length,
+                annotation.measuredValue, unit));
+
         // Width
-        holder.tvWidth.setText(holder.itemView.getContext().getString(R.string.annotation_list_width, annotation.width));
-        
+        holder.tvWidth
+                .setText(holder.itemView.getContext().getString(R.string.annotation_list_width, annotation.width));
+
         holder.colorIndicator.setBackgroundColor(annotation.color);
-        
+
         holder.itemView.setOnClickListener(v -> listener.onAnnotationClick(annotation));
         holder.btnDelete.setOnClickListener(v -> listener.onDeleteClick(annotation));
     }

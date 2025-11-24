@@ -22,7 +22,7 @@ public class DrawView extends View {
     private List<Annotation> annotations = new ArrayList<>();
     private SettingsManager settingsManager;
     private AnnotationDrawer drawer;
-    
+
     // Interaction state
     private Annotation activeAnnotation = null;
     private int activeControlPoint = -1; // 0: start, 1: end, -1: none
@@ -30,6 +30,7 @@ public class DrawView extends View {
 
     public interface OnAnnotationChangeListener {
         void onAnnotationModified(Annotation annotation);
+
         void onAnnotationSelected(Annotation annotation);
     }
 
@@ -64,18 +65,22 @@ public class DrawView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (photoView == null || annotations == null) return;
+        if (photoView == null || annotations == null)
+            return;
 
         RectF displayRect = photoView.getDisplayRect();
-        if (displayRect == null) return;
-        
+        if (displayRect == null)
+            return;
+
         int arrowStyle = settingsManager.getArrowStyle();
         drawer.draw(canvas, annotations, displayRect, arrowStyle, true, 1.0f, true);
     }
 
-    // Interaction logic remains the same, need to duplicate mapping logic or expose it from Drawer?
-    // Drawer mapping is private. Let's keep interaction logic here as it depends on View coordinates.
-    
+    // Interaction logic remains the same, need to duplicate mapping logic or expose
+    // it from Drawer?
+    // Drawer mapping is private. Let's keep interaction logic here as it depends on
+    // View coordinates.
+
     private float mapX(float x, RectF rect) {
         return rect.left + x * rect.width();
     }
@@ -94,9 +99,11 @@ public class DrawView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (photoView == null) return false;
+        if (photoView == null)
+            return false;
         RectF rect = photoView.getDisplayRect();
-        if (rect == null) return false;
+        if (rect == null)
+            return false;
 
         float x = event.getX();
         float y = event.getY();
@@ -105,7 +112,7 @@ public class DrawView extends View {
             case MotionEvent.ACTION_DOWN:
                 activeAnnotation = null;
                 activeControlPoint = -1;
-                float threshold = 50f; 
+                float threshold = com.zfdang.dimensioncam.utils.Constants.TOUCH_THRESHOLD_DP;
 
                 for (int i = annotations.size() - 1; i >= 0; i--) {
                     Annotation a = annotations.get(i);
@@ -117,22 +124,24 @@ public class DrawView extends View {
                     if (dist(x, y, sx, sy) < threshold) {
                         activeAnnotation = a;
                         activeControlPoint = 0;
-                        if (listener != null) listener.onAnnotationSelected(a);
+                        if (listener != null)
+                            listener.onAnnotationSelected(a);
                         return true;
                     } else if (dist(x, y, ex, ey) < threshold) {
                         activeAnnotation = a;
                         activeControlPoint = 1;
-                        if (listener != null) listener.onAnnotationSelected(a);
+                        if (listener != null)
+                            listener.onAnnotationSelected(a);
                         return true;
                     }
                 }
-                return false; 
+                return false;
 
             case MotionEvent.ACTION_MOVE:
                 if (activeAnnotation != null && activeControlPoint != -1) {
                     float newX = unmapX(x, rect);
                     float newY = unmapY(y, rect);
-                    
+
                     newX = Math.max(0, Math.min(1, newX));
                     newY = Math.max(0, Math.min(1, newY));
 
