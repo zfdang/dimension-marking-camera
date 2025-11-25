@@ -29,7 +29,7 @@ body {
 }
 
 .lang-switch a {
-    color: #2196F3;
+    color: #168a62;
     text-decoration: none;
 }
 
@@ -56,14 +56,14 @@ header {
     align-items: center;
     text-align: center;
     padding: 40px 0 20px;
-    border-bottom: 3px solid #2196F3;
+    border-bottom: 3px solid #168a62;
     margin-bottom: 30px;
 }
 
 
 header h1 {
     font-size: 3em;
-    color: #2196F3;
+    color: #168a62;
     margin-bottom: 10px;
 }
 
@@ -84,7 +84,7 @@ header h1 {
 .links a {
     display: inline-block;
     padding: 10px 20px;
-    background: #2196F3;
+    background: #168a62;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -92,7 +92,7 @@ header h1 {
 }
 
 .links a:hover {
-    background: #1976D2;
+    background: #0D6B4A;
 }
 
 /* Sections */
@@ -102,7 +102,7 @@ section {
 
 section h2 {
     font-size: 2em;
-    color: #2196F3;
+    color: #168a62;
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 2px solid #e0e0e0;
@@ -115,7 +115,7 @@ section h3 {
 }
 
 .intro {
-    background: #E3F2FD;
+    background: #E8F5F0;
     padding: 30px;
     border-radius: 8px;
     margin-bottom: 40px;
@@ -140,7 +140,7 @@ ol li {
 }
 
 ul li strong {
-    color: #2196F3;
+    color: #168a62;
 }
 
 /* Tech Section */
@@ -198,7 +198,7 @@ footer {
 }
 
 footer a {
-    color: #2196F3;
+    color: #168a62;
     text-decoration: none;
 }
 
