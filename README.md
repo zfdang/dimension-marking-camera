@@ -119,16 +119,6 @@ cd dimension-marking-camera
 ### 📄 许可证
 本项目采用 **MIT 许可证**，详情请参阅 [LICENSE](LICENSE) 文件。
 
----
-
-## 📸 Screenshots
-
-<p align="center">
-  <img src="docs/dimcam.png" alt="DimCam Screenshot" width="800"/>
-</p>
-
----
-
 ## 🔗 Links
 
 - 🌐 **Project Website**: [https://dimcam.zfdang.com](https://dimcam.zfdang.com)
