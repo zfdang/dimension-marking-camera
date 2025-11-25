@@ -18,7 +18,28 @@ body {
     margin: 0 auto;
     padding: 20px;
     background: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Language Switcher */
+.lang-switch {
+    text-align: right;
+    padding: 10px 0;
+    font-size: 0.9em;
+}
+
+.lang-switch a {
+    color: #2196F3;
+    text-decoration: none;
+}
+
+.lang-switch a:hover {
+    text-decoration: underline;
+}
+
+.lang-switch .active {
+    color: #666;
+    font-weight: bold;
 }
 
 /* Header */
@@ -95,12 +116,14 @@ section h3 {
 }
 
 /* Features and Lists */
-ul, ol {
+ul,
+ol {
     margin-left: 20px;
     margin-bottom: 20px;
 }
 
-ul li, ol li {
+ul li,
+ol li {
     margin-bottom: 12px;
     line-height: 1.8;
 }
@@ -130,7 +153,7 @@ ul li strong {
 .screenshot-grid img {
     width: 100%;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s;
 }
 
