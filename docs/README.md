@@ -7,7 +7,7 @@ This directory contains the GitHub Pages website for the DimensionCam project.
 - `index.html` - Main landing page
 - `download.html` - Download page with installation guide
 - `style.css` - Shared stylesheet
-- `dimensioncam.png` - App screenshot/logo
+- `dimcam.png` - App screenshot/logo
 
 ## Viewing Locally
 

@@ -49,7 +49,7 @@ android {
     // Custom APK naming (zSMTH style)
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def base = "DimensionCam-${variant.buildType.name}-v${defaultConfig.versionName}"
+            def base = "DimCam-${variant.buildType.name}-v${defaultConfig.versionName}"
             output.outputFileName = "${base}.apk"
         }
     }

@@ -35,7 +35,7 @@ jobs:
     - name: Create ZIPs
       working-directory: ./app/build/outputs/apk/
       run: |
-        zip -r ./dimensioncam.zip ./release
+        zip -r ./dimcam.zip ./release
 
     - name: Get git revision
       id: get_git_revision
@@ -61,6 +61,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./app/build/outputs/apk/dimensioncam.zip
-          asset_name: dimensioncam.zip
+          asset_path: ./app/build/outputs/apk/dimcam.zip
+          asset_name: dimcam.zip
           asset_content_type: application/zip

@@ -26,13 +26,28 @@
 
         <section class="download-section">
             <h2>最新版本</h2>
-            <div class="download-box">
-                <h3>下载 APK</h3>
-                <p>从 GitHub Releases 获取最新版本的尺寸标注相机：</p>
-                <a href="https://github.com/zfdang/dimension-marking-camera/releases/latest" class="download-button"
-                    target="_blank">
-                    下载最新 APK
-                </a>
+
+            <div class="download-grid">
+                <!-- 本地 APK 下载 -->
+                <div class="download-box">
+                    <h3>📦 直接下载</h3>
+                    <p>从本站直接下载最新版本（v25.11.25）：</p>
+                    <a href="DimCam-release-v25.11.25.apk" class="download-button" download>
+                        下载 APK (7.2 MB)
+                    </a>
+                    <p class="download-note">从 dimcam.zfdang.com 快速下载</p>
+                </div>
+
+                <!-- GitHub 下载 -->
+                <div class="download-box github-box">
+                    <h3>🐙 GitHub 发布</h3>
+                    <p>或从 GitHub 下载所有版本及查看更新日志：</p>
+                    <a href="https://github.com/zfdang/dimension-marking-camera/releases/latest"
+                        class="download-button github-button" target="_blank">
+                        前往 GitHub
+                    </a>
+                    <p class="download-note">查看所有版本和更新日志</p>
+                </div>
             </div>
         </section>
 
@@ -81,24 +96,43 @@ cd dimension-marking-camera
             margin: 40px 0;
         }
 
+        .download-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
         .download-box {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 12px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
+        .download-box.github-box {
+            background: linear-gradient(135deg, #24292e 0%, #444d56 100%);
+        }
+
         .download-box h3 {
             color: white;
-            font-size: 2em;
-            margin-bottom: 15px;
+            font-size: 1.5em;
+            margin-bottom: 12px;
         }
 
         .download-box p {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             opacity: 0.95;
+            font-size: 0.95em;
+        }
+
+        .download-note {
+            font-size: 0.85em;
+            margin-top: 12px;
+            margin-bottom: 0;
+            opacity: 0.8;
         }
 
         .download-button {
@@ -141,6 +175,13 @@ cd dimension-marking-camera
             background: transparent;
             color: #f8f8f2;
             padding: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </body>

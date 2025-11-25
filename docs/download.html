@@ -26,13 +26,28 @@
 
         <section class="download-section">
             <h2>Latest Release</h2>
-            <div class="download-box">
-                <h3>Download APK</h3>
-                <p>Get the latest version of DimensionCam directly from GitHub Releases:</p>
-                <a href="https://github.com/zfdang/dimension-marking-camera/releases/latest" class="download-button"
-                    target="_blank">
-                    Download Latest APK
-                </a>
+
+            <div class="download-grid">
+                <!-- Local APK Download -->
+                <div class="download-box">
+                    <h3>📦 Direct Download</h3>
+                    <p>Download the latest version (v25.11.25) directly from this site:</p>
+                    <a href="DimCam-release-v25.11.25.apk" class="download-button" download>
+                        Download APK (7.2 MB)
+                    </a>
+                    <p class="download-note">Fast download from dimcam.zfdang.com</p>
+                </div>
+
+                <!-- GitHub Download -->
+                <div class="download-box github-box">
+                    <h3>🐙 GitHub Releases</h3>
+                    <p>Or download from GitHub for all versions and release notes:</p>
+                    <a href="https://github.com/zfdang/dimension-marking-camera/releases/latest"
+                        class="download-button github-button" target="_blank">
+                        View on GitHub
+                    </a>
+                    <p class="download-note">Access all releases and changelog</p>
+                </div>
             </div>
         </section>
 
@@ -81,24 +96,43 @@ cd dimension-marking-camera
             margin: 40px 0;
         }
 
+        .download-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
         .download-box {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 12px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
+        .download-box.github-box {
+            background: linear-gradient(135deg, #24292e 0%, #444d56 100%);
+        }
+
         .download-box h3 {
             color: white;
-            font-size: 2em;
-            margin-bottom: 15px;
+            font-size: 1.5em;
+            margin-bottom: 12px;
         }
 
         .download-box p {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             opacity: 0.95;
+            font-size: 0.95em;
+        }
+
+        .download-note {
+            font-size: 0.85em;
+            margin-top: 12px;
+            margin-bottom: 0;
+            opacity: 0.8;
         }
 
         .download-button {
@@ -141,6 +175,13 @@ cd dimension-marking-camera
             background: transparent;
             color: #f8f8f2;
             padding: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </body>
