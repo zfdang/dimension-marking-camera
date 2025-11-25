@@ -24,6 +24,7 @@ public class SettingsFragment extends Fragment {
     private SettingsManager settingsManager;
     private TextView tvArrowStyle;
     private TextView tvLanguage;
+    private TextView tvVersion;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,9 +41,12 @@ public class SettingsFragment extends Fragment {
 
         tvArrowStyle = view.findViewById(R.id.tv_arrow_style_value);
         tvLanguage = view.findViewById(R.id.tv_language_value);
+        tvVersion = view.findViewById(R.id.tv_version_value);
 
         view.findViewById(R.id.ll_arrow_style).setOnClickListener(v -> showArrowStyleDialog());
         view.findViewById(R.id.ll_language).setOnClickListener(v -> showLanguageDialog());
+        view.findViewById(R.id.ll_author).setOnClickListener(v -> openAuthorProfile());
+        view.findViewById(R.id.ll_github).setOnClickListener(v -> openGitHubProject());
 
         updateUI();
         return view;
@@ -81,6 +85,17 @@ public class SettingsFragment extends Fragment {
             tvLanguage.setText("English");
         else if ("zh".equals(lang))
             tvLanguage.setText("中文");
+
+        // Get version info dynamically
+        try {
+            String versionName = getContext().getPackageManager()
+                    .getPackageInfo(getContext().getPackageName(), 0).versionName;
+            int versionCode = getContext().getPackageManager()
+                    .getPackageInfo(getContext().getPackageName(), 0).versionCode;
+            tvVersion.setText(versionName + " (" + versionCode + ")");
+        } catch (Exception e) {
+            tvVersion.setText("Unknown");
+        }
     }
 
     private void showArrowStyleDialog() {
@@ -111,6 +126,11 @@ public class SettingsFragment extends Fragment {
                     }
                 })
                 .show();
+    }
+
+    private void openAuthorProfile() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/zfdang"));
+        startActivity(intent);
     }
 
     private void openGitHubProject() {

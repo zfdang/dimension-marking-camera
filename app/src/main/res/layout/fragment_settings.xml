@@ -11,7 +11,7 @@
         android:text="@string/title_settings"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="10dp" />
 
     <LinearLayout
         android:id="@+id/ll_arrow_style"
@@ -66,43 +66,90 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#E0E0E0"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/pref_about"
+        android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Version -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pref_version" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1.0"
-        android:layout_marginBottom="8dp"/>
+        android:orientation="vertical"
+        android:padding="12dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pref_author" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DimensionCam Team"
-        android:layout_marginBottom="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_version"
+            android:textSize="18sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_version_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#757575" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0" />
+
+    <!-- Author -->
+    <LinearLayout
+        android:id="@+id/ll_author"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pref_github" />
-    <TextView
-        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_author"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="zfdang"
+            android:textColor="#757575" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0" />
+
+    <!-- GitHub -->
+    <LinearLayout
+        android:id="@+id/ll_github"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="https://github.com/zfdang/DimensionCam"
-        android:autoLink="web" />
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_github"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="https://github.com/zfdang/dimension-marking-camera"
+            android:textColor="#757575" />
+    </LinearLayout>
 
 </LinearLayout>
