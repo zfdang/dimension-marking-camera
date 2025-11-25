@@ -46,7 +46,7 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.ll_arrow_style).setOnClickListener(v -> showArrowStyleDialog());
         view.findViewById(R.id.ll_language).setOnClickListener(v -> showLanguageDialog());
         view.findViewById(R.id.ll_author).setOnClickListener(v -> openAuthorProfile());
-        view.findViewById(R.id.ll_github).setOnClickListener(v -> openGitHubProject());
+        view.findViewById(R.id.ll_github).setOnClickListener(v -> openGitHubRepository());
 
         updateUI();
         return view;
@@ -61,7 +61,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_about) {
-            openGitHubProject();
+            openProjectWebsite();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -133,7 +133,13 @@ public class SettingsFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void openGitHubProject() {
+    private void openProjectWebsite() {
+        String url = "https://dimcam.zfdang.com";
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
+
+    private void openGitHubRepository() {
         String url = "https://github.com/zfdang/dimension-marking-camera";
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
