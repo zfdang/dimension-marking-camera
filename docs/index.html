@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DimensionCam - Dimension Marking Camera</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DimensionCam</h1>
+            <p class="subtitle">尺寸标注相机 - Dimension Marking Camera</p>
+        </header>
+
+        <nav class="links">
+            <a href="https://github.com/zfdang/dimension-marking-camera" target="_blank">View on GitHub</a>
+            <a href="download.html">Download APK</a>
+            <a href="#features">Features</a>
+            <a href="#screenshots">Screenshots</a>
+        </nav>
+
+        <section class="intro">
+            <h2>An Open-Source Android Photo Annotation Tool</h2>
+            <p>DimensionCam is an ad-free, open-source Android application that allows you to capture or select photos, add precise measurement annotations between points, and export beautifully annotated images.</p>
+        </section>
+
+        <section id="features" class="features">
+            <h2>Key Features</h2>
+            <ul>
+                <li><strong>Photo Management</strong> - Take photos or select from gallery, view thumbnails in a grid, non-destructive deletion</li>
+                <li><strong>Precise Annotation</strong> - Place start/end points, input distance values with multiple units (mm, cm, dm, m)</li>
+                <li><strong>Customizable Styles</strong> - Choose from 3 endpoint styles: T-Arrow-T, T-T, or Arrow-Arrow</li>
+                <li><strong>Rich Color Options</strong> - Select from 6 colors: Red, Green, Blue, White, Black, Purple</li>
+                <li><strong>Flexible Editing</strong> - Drag control points, adjust line width, undo/redo operations</li>
+                <li><strong>Multi-language</strong> - Full support for English and Chinese (中文)</li>
+                <li><strong>Export</strong> - Save high-quality annotated images to device storage</li>
+                <li><strong>Clean Architecture</strong> - Built with MVVM pattern, Room database, and modern Android libraries</li>
+            </ul>
+        </section>
+
+        <section class="tech">
+            <h3>Technical Highlights</h3>
+            <ul>
+                <li>📱 Minimum Android API: 24 (Android 7.0)</li>
+                <li>🏗️ Architecture: MVVM with LiveData and Repository pattern</li>
+                <li>💾 Database: Room persistence library</li>
+                <li>🖼️ Image Loading: Glide</li>
+                <li>🔍 Photo Viewing: PhotoView with zoom support</li>
+                <li>📝 Language: Java with XML layouts</li>
+            </ul>
+        </section>
+
+        <section id="screenshots" class="screenshots">
+            <h2>Screenshots</h2>
+            <div class="screenshot-grid">
+                <img src="dimensioncam.png" alt="DimensionCam Screenshot" />
+                <!-- Add more screenshots here -->
+            </div>
+        </section>
+
+        <section class="usage">
+            <h2>How to Use</h2>
+            <ol>
+                <li>Launch the app and navigate to the <strong>Photos</strong> tab</li>
+                <li>Add a photo using the camera or select from gallery</li>
+                <li>Switch to the <strong>Annotation</strong> tab</li>
+                <li>Tap to place start and end points on the image</li>
+                <li>Enter the distance measurement and customize the style</li>
+                <li>Use the <strong>Export</strong> button to save your annotated image</li>
+            </ol>
+        </section>
+
+        <section class="contribute">
+            <h2>Contributing</h2>
+            <p>Contributions are welcome! Please fork the repository,create a feature branch, and submit a pull request.</p>
+            <p>Before submitting, run <code>./gradlew lint</code> to ensure code quality.</p>
+        </section>
+
+        <footer>
+            <p>
+                <a href="https://github.com/zfdang/dimension-marking-camera">DimensionCam on GitHub</a> | 
+                <a href="https://github.com/zfdang">by zfdang</a>
+            </p>
+            <p class="license">Licensed under MIT License</p>
+        </footer>
+    </div>
+</body>
+</html>

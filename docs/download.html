@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download DimensionCam</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Download DimensionCam</h1>
+            <p class="subtitle">Get the latest version</p>
+        </header>
+
+        <nav class="links">
+            <a href="index.html">← Back to Home</a>
+            <a href="https://github.com/zfdang/dimension-marking-camera/releases" target="_blank">All Releases</a>
+        </nav>
+
+        <section class="download-section">
+            <h2>Latest Release</h2>
+            <div class="download-box">
+                <h3>Download APK</h3>
+                <p>Get the latest version of DimensionCam directly from GitHub Releases:</p>
+                <a href="https://github.com/zfdang/dimension-marking-camera/releases/latest" class="download-button"
+                    target="_blank">
+                    Download Latest APK
+                </a>
+            </div>
+        </section>
+
+        <section class="install-guide">
+            <h2>Installation Guide</h2>
+            <ol>
+                <li>Download the APK file from the link above</li>
+                <li>On your Android device, go to <strong>Settings → Security</strong></li>
+                <li>Enable <strong>Install from Unknown Sources</strong> if prompted</li>
+                <li>Open the downloaded APK file</li>
+                <li>Follow the installation prompts</li>
+                <li>Launch DimensionCam and start annotating!</li>
+            </ol>
+        </section>
+
+        <section class="requirements">
+            <h2>System Requirements</h2>
+            <ul>
+                <li>Android 7.0 (API Level 24) or higher</li>
+                <li>Approximately 10 MB of storage space</li>
+                <li>Camera permission (for taking photos)</li>
+                <li>Storage permission (for saving annotated images)</li>
+            </ul>
+        </section>
+
+        <section class="build-yourself">
+            <h2>Build from Source</h2>
+            <p>You can also build the app yourself from the source code:</p>
+            <pre><code>git clone https://github.com/zfdang/dimension-marking-camera.git
+cd dimension-marking-camera
+./gradlew assembleRelease</code></pre>
+            <p>The APK will be generated at: <code>app/build/outputs/apk/release/</code></p>
+        </section>
+
+        <footer>
+            <p>
+                <a href="index.html">DimensionCam Home</a> |
+                <a href="https://github.com/zfdang/dimension-marking-camera">GitHub Repository</a> |
+                <a href="https://github.com/zfdang">by zfdang</a>
+            </p>
+        </footer>
+    </div>
+
+    <style>
+        .download-section {
+            margin: 40px 0;
+        }
+
+        .download-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-box h3 {
+            color: white;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .download-box p {
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        .download-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .install-guide,
+        .requirements,
+        .build-yourself {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        pre code {
+            background: transparent;
+            color: #f8f8f2;
+            padding: 0;
+        }
+    </style>
+</body>
+
+</html>
