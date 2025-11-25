@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         navView = findViewById(R.id.nav_view);
-        
+
         // Initialize fragments
         // Check if fragments already exist (e.g. after rotation)
         FragmentManager fm = getSupportFragmentManager();
@@ -47,17 +47,21 @@ public class MainActivity extends AppCompatActivity {
             photosFragment = new PhotosFragment();
             annotationFragment = new AnnotationFragment();
             settingsFragment = new SettingsFragment();
-            
+
             fm.beginTransaction().add(R.id.nav_host_fragment, settingsFragment, "3").hide(settingsFragment).commit();
-            fm.beginTransaction().add(R.id.nav_host_fragment, annotationFragment, "2").hide(annotationFragment).commit();
+            fm.beginTransaction().add(R.id.nav_host_fragment, annotationFragment, "2").hide(annotationFragment)
+                    .commit();
             fm.beginTransaction().add(R.id.nav_host_fragment, photosFragment, "1").commit();
             activeFragment = photosFragment;
         } else {
             // Restore active fragment state if needed, or just default to photos
             // For simplicity, finding the visible one
-            if (!photosFragment.isHidden()) activeFragment = photosFragment;
-            else if (!annotationFragment.isHidden()) activeFragment = annotationFragment;
-            else if (!settingsFragment.isHidden()) activeFragment = settingsFragment;
+            if (!photosFragment.isHidden())
+                activeFragment = photosFragment;
+            else if (!annotationFragment.isHidden())
+                activeFragment = annotationFragment;
+            else if (!settingsFragment.isHidden())
+                activeFragment = settingsFragment;
         }
 
         // Set initial title
@@ -97,13 +101,13 @@ public class MainActivity extends AppCompatActivity {
             if (activeFragment == photosFragment) {
                 getSupportActionBar().setTitle(appName + " - " + getString(R.string.title_photos));
             } else if (activeFragment == annotationFragment) {
-                getSupportActionBar().setTitle(appName + " - " + getString(R.string.title_annotation));
+                getSupportActionBar().setTitle(appName + " - " + getString(R.string.title_annotate));
             } else if (activeFragment == settingsFragment) {
                 getSupportActionBar().setTitle(appName + " - " + getString(R.string.title_settings));
             }
         }
     }
-    
+
     public void navigateToAnnotation(long photoId) {
         // Switch to Annotation tab and pass photoId
         navView.setSelectedItemId(R.id.navigation_annotation);
@@ -111,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             ((AnnotationFragment) annotationFragment).loadPhoto(photoId);
         }
     }
-    
+
     public void restart() {
         recreate();
     }

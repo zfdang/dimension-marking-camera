@@ -64,9 +64,22 @@ public class AnnotationDrawer {
             // Draw line
             canvas.drawLine(startX, startY, endX, endY, paint);
 
-            // Draw endpoints
-            drawEndpoint(canvas, startX, startY, endX, endY, annotation.width * scaleFactor, arrowStyle);
-            drawEndpoint(canvas, endX, endY, startX, startY, annotation.width * scaleFactor, arrowStyle);
+            // Draw endpoints based on style
+            if (arrowStyle == SettingsManager.STYLE_T_ARROW_T) {
+                // |<----->| T型+箭头+T型：每个端点同时绘制T型和箭头
+                drawEndpointShape(canvas, startX, startY, endX, endY, annotation.width * scaleFactor, "T");
+                drawEndpointShape(canvas, startX, startY, endX, endY, annotation.width * scaleFactor, "ARROW");
+                drawEndpointShape(canvas, endX, endY, startX, startY, annotation.width * scaleFactor, "T");
+                drawEndpointShape(canvas, endX, endY, startX, startY, annotation.width * scaleFactor, "ARROW");
+            } else if (arrowStyle == SettingsManager.STYLE_T_T) {
+                // |-----| T型+T型：两端都是T型
+                drawEndpointShape(canvas, startX, startY, endX, endY, annotation.width * scaleFactor, "T");
+                drawEndpointShape(canvas, endX, endY, startX, startY, annotation.width * scaleFactor, "T");
+            } else if (arrowStyle == SettingsManager.STYLE_ARROW_ARROW) {
+                // <-----> 箭头+箭头：两端都是箭头
+                drawEndpointShape(canvas, startX, startY, endX, endY, annotation.width * scaleFactor, "ARROW");
+                drawEndpointShape(canvas, endX, endY, startX, startY, annotation.width * scaleFactor, "ARROW");
+            }
 
             // Draw text
             // Set text color to match annotation color
@@ -113,13 +126,24 @@ public class AnnotationDrawer {
         textPaint.setTextSize(originalTextSize);
     }
 
-    private void drawEndpoint(Canvas canvas, float tipX, float tipY, float tailX, float tailY, float width, int style) {
+    // 绘制端点形状
+    private void drawEndpointShape(Canvas canvas, float tipX, float tipY, float tailX, float tailY, float width,
+            String shapeType) {
         float angle = (float) Math.atan2(tailY - tipY, tailX - tipX);
         float size = width * 5;
         if (size < com.zfdang.dimensioncam.utils.Constants.MIN_ARROW_SIZE)
             size = com.zfdang.dimensioncam.utils.Constants.MIN_ARROW_SIZE;
 
-        if (style == SettingsManager.STYLE_ARROW) {
+        if (shapeType.equals("T")) {
+            // 绘制T型端点
+            float tAngle = (float) Math.toRadians(90);
+            float x1 = (float) (tipX + Math.cos(angle + tAngle) * (size / 2));
+            float y1 = (float) (tipY + Math.sin(angle + tAngle) * (size / 2));
+            float x2 = (float) (tipX + Math.cos(angle - tAngle) * (size / 2));
+            float y2 = (float) (tipY + Math.sin(angle - tAngle) * (size / 2));
+            canvas.drawLine(x1, y1, x2, y2, paint);
+        } else if (shapeType.equals("ARROW")) {
+            // 绘制箭头端点
             float arrowAngle = (float) Math.toRadians(30);
             float x1 = (float) (tipX + Math.cos(angle + arrowAngle) * size);
             float y1 = (float) (tipY + Math.sin(angle + arrowAngle) * size);
@@ -127,17 +151,6 @@ public class AnnotationDrawer {
             float y2 = (float) (tipY + Math.sin(angle - arrowAngle) * size);
             canvas.drawLine(tipX, tipY, x1, y1, paint);
             canvas.drawLine(tipX, tipY, x2, y2, paint);
-        } else if (style == SettingsManager.STYLE_T_SHAPE) {
-            float tAngle = (float) Math.toRadians(90);
-            float x1 = (float) (tipX + Math.cos(angle + tAngle) * (size / 2));
-            float y1 = (float) (tipY + Math.sin(angle + tAngle) * (size / 2));
-            float x2 = (float) (tipX + Math.cos(angle - tAngle) * (size / 2));
-            float y2 = (float) (tipY + Math.sin(angle - tAngle) * (size / 2));
-            canvas.drawLine(x1, y1, x2, y2, paint);
-        } else if (style == SettingsManager.STYLE_DOT) {
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawCircle(tipX, tipY, width * 2, paint);
-            paint.setStyle(Paint.Style.STROKE);
         }
     }
 

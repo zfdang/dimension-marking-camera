@@ -2,10 +2,11 @@
     <string name="app_name">DimCam</string>
     <string name="title_photos">Photos</string>
     <string name="title_annotation">Annotation</string>
+    <string name="title_annotate">Annotate</string>
     <string name="title_settings">Settings</string>
     
     <!-- Photos Tab -->
-    <string name="action_add_photo">Add Photo for Annotation:</string>
+    <string name="action_add_photo">Add Photo to Annotate:</string>
     <string name="action_delete">Delete</string>
     <string name="confirm_delete_title">Delete Photo?</string>
     <string name="confirm_delete_message">This will remove the photo from the app but keep the original file.</string>
@@ -14,13 +15,13 @@
     <string name="annotation_count">%d annotations</string>
     <string name="action_export">Export</string>
     <string name="hint_select_photo">Please select a photo from the photos list to annotate...</string>
-    <string name="hint_add_photo">Click + in the top right to add photo for annotation...</string>
+    <string name="hint_add_photo">Click + in the top right to add photo to annotate...</string>
     
     <!-- Annotation Tab -->
     <string name="action_undo">Undo</string>
     <string name="action_add_annotation">Add Annotation</string>
     <string name="dialog_annotation_properties">Annotation Properties</string>
-    <string name="label_distance">Distance</string>
+    <string name="label_distance">Dimension</string>
     <string name="label_color">Color</string>
     <string name="label_width">Line Width</string>
     <string name="pref_unit">Unit</string>
@@ -30,10 +31,10 @@
     <string name="unit_m">m</string>
     
     <!-- Settings Tab -->
-    <string name="pref_arrow_style">Arrow Style</string>
-    <string name="style_arrow">Arrow</string>
-    <string name="style_t_shape">T-Shape</string>
-    <string name="style_dot">Dot</string>
+    <string name="pref_arrow_style_title">Endpoint Style</string>
+    <string name="style_t_arrow_t">|&lt;-----&gt;| (T-Arrow-T)</string>
+    <string name="style_t_t">|-----| (T-T)</string>
+    <string name="style_arrow_arrow">&lt;-----&gt; (Arrow-Arrow)</string>
     <string name="color_red">Red</string>
     <string name="color_green">Green</string>
     <string name="color_blue">Blue</string>

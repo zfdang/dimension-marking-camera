@@ -24,14 +24,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pref_arrow_style"
+            android:text="@string/pref_arrow_style_title"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_arrow_style_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/style_arrow"
+            android:text="@string/style_t_arrow_t"
             android:textColor="#757575" />
     </LinearLayout>
 

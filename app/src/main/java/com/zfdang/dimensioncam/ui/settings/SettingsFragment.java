@@ -33,7 +33,8 @@ public class SettingsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         settingsManager = new SettingsManager(getContext());
 
@@ -66,31 +67,40 @@ public class SettingsFragment extends Fragment {
 
     private void updateUI() {
         int style = settingsManager.getArrowStyle();
-        if (style == SettingsManager.STYLE_ARROW) tvArrowStyle.setText(R.string.style_arrow);
-        else if (style == SettingsManager.STYLE_T_SHAPE) tvArrowStyle.setText(R.string.style_t_shape);
-        else if (style == SettingsManager.STYLE_DOT) tvArrowStyle.setText(R.string.style_dot);
+        if (style == SettingsManager.STYLE_T_ARROW_T)
+            tvArrowStyle.setText(R.string.style_t_arrow_t);
+        else if (style == SettingsManager.STYLE_T_T)
+            tvArrowStyle.setText(R.string.style_t_t);
+        else if (style == SettingsManager.STYLE_ARROW_ARROW)
+            tvArrowStyle.setText(R.string.style_arrow_arrow);
 
         String lang = settingsManager.getLanguage();
-        if ("auto".equals(lang)) tvLanguage.setText("Auto");
-        else if ("en".equals(lang)) tvLanguage.setText("English");
-        else if ("zh".equals(lang)) tvLanguage.setText("中文");
+        if ("auto".equals(lang))
+            tvLanguage.setText("Auto");
+        else if ("en".equals(lang))
+            tvLanguage.setText("English");
+        else if ("zh".equals(lang))
+            tvLanguage.setText("中文");
     }
 
     private void showArrowStyleDialog() {
-        String[] items = {getString(R.string.style_arrow), getString(R.string.style_t_shape), getString(R.string.style_dot)};
+        String[] items = { getString(R.string.style_t_arrow_t), getString(R.string.style_t_t),
+                getString(R.string.style_arrow_arrow) };
+        int selected = settingsManager.getArrowStyle();
         new AlertDialog.Builder(getContext())
-                .setTitle(R.string.pref_arrow_style)
-                .setItems(items, (dialog, which) -> {
+                .setTitle(R.string.pref_arrow_style_title)
+                .setSingleChoiceItems(items, selected, (dialog, which) -> {
                     settingsManager.setArrowStyle(which);
                     updateUI();
+                    dialog.dismiss();
                 })
                 .show();
     }
 
     private void showLanguageDialog() {
-        String[] items = {"Auto", "English", "中文"};
-        String[] values = {"auto", "en", "zh"};
-        
+        String[] items = { "Auto", "English", "中文" };
+        String[] values = { "auto", "en", "zh" };
+
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.pref_language)
                 .setItems(items, (dialog, which) -> {

@@ -2,6 +2,7 @@
     <string name="app_name">尺标相机</string>
     <string name="title_photos">照片</string>
     <string name="title_annotation">标注</string>
+    <string name="title_annotate">标注</string>
     <string name="title_settings">设置</string>
     
     <!-- Photos Tab -->
@@ -30,10 +31,10 @@
     <string name="unit_m">米</string>
     
     <!-- Settings Tab -->
-    <string name="pref_arrow_style">箭头样式</string>
-    <string name="style_arrow">箭头</string>
-    <string name="style_t_shape">T型</string>
-    <string name="style_dot">圆点</string>
+    <string name="pref_arrow_style_title">端点样式</string>
+    <string name="style_t_arrow_t">|&lt;-----&gt;| (T型箭头T型)</string>
+    <string name="style_t_t">|-----| (T型T型)</string>
+    <string name="style_arrow_arrow">&lt;-----&gt; (箭头箭头)</string>
     <string name="color_red">红色</string>
     <string name="color_green">绿色</string>
     <string name="color_blue">蓝色</string>
