@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尺寸标注相机 - DimensionCam</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="lang-switch">
+            <a href="index.html">English</a> | <span class="active">中文</span>
+        </div>
+
+        <header>
+            <h1>DimCam 尺标相机</h1>
+            <p class="subtitle">尺寸标注相机 - Dimension Marking Camera</p>
+        </header>
+
+        <nav class="links">
+            <a href="https://github.com/zfdang/dimension-marking-camera" target="_blank">GitHub 仓库</a>
+            <a href="download-zh.html">下载 APK</a>
+            <a href="#features">功能特性</a>
+            <a href="#screenshots">应用截图</a>
+        </nav>
+
+        <section class="intro">
+            <h2>开源的 Android 照片标注工具</h2>
+            <p>尺寸标注相机是一款无广告、开源的 Android 应用程序，可以让您拍摄或选择照片，添加精确的点对点测量标注，并导出带有精美标注的图片。</p>
+        </section>
+
+        <section id="features" class="features">
+            <h2>主要功能</h2>
+            <ul>
+                <li><strong>照片管理</strong> - 拍照或从相册选择，网格缩略图预览，非破坏性删除</li>
+                <li><strong>精确标注</strong> - 放置起点/终点，输入距离值，支持多种单位（毫米、厘米、分米、米）</li>
+                <li><strong>自定义样式</strong> - 3种端点样式可选：T型箭头T型、T型T型、箭头箭头</li>
+                <li><strong>丰富的颜色</strong> - 6种颜色可选：红色、绿色、蓝色、白色、黑色、紫色</li>
+                <li><strong>灵活编辑</strong> - 拖拽控制点，调整线条粗细，支持撤销/重做操作</li>
+                <li><strong>多语言支持</strong> - 完整支持中文和英文界面</li>
+                <li><strong>图片导出</strong> - 将高质量的标注图片保存到设备存储</li>
+                <li><strong>清晰架构</strong> - 采用 MVVM 模式、Room 数据库和现代 Android 库构建</li>
+            </ul>
+        </section>
+
+        <section class="tech">
+            <h3>技术亮点</h3>
+            <ul>
+                <li>📱 最低 Android API：24（Android 7.0）</li>
+                <li>🏗️ 架构：MVVM + LiveData + Repository 模式</li>
+                <li>💾 数据库：Room 持久化库</li>
+                <li>🖼️ 图片加载：Glide</li>
+                <li>🔍 图片查看：PhotoView 支持缩放</li>
+                <li>📝 开发语言：Java + XML 布局</li>
+            </ul>
+        </section>
+
+        <section id="screenshots" class="screenshots">
+            <h2>应用截图</h2>
+            <div class="screenshot-grid">
+                <img src="dimensioncam.png" alt="尺寸标注相机截图" />
+                <!-- 在此添加更多截图 -->
+            </div>
+        </section>
+
+        <section class="usage">
+            <h2>使用方法</h2>
+            <ol>
+                <li>启动应用，进入 <strong>照片</strong> 标签页</li>
+                <li>使用相机拍照或从相册选择照片</li>
+                <li>切换到 <strong>标注</strong> 标签页</li>
+                <li>点击图片放置起点和终点</li>
+                <li>输入距离测量值并自定义样式</li>
+                <li>使用 <strong>导出</strong> 按钮保存标注后的图片</li>
+            </ol>
+        </section>
+
+        <section class="contribute">
+            <h2>参与贡献</h2>
+            <p>欢迎贡献代码！请 Fork 本仓库，创建功能分支，然后提交 Pull Request。</p>
+            <p>提交前请运行 <code>./gradlew lint</code> 确保代码质量。</p>
+        </section>
+
+        <footer>
+            <p>
+                <a href="https://github.com/zfdang/dimension-marking-camera">DimensionCam GitHub 仓库</a> |
+                <a href="https://github.com/zfdang">作者 zfdang</a>
+            </p>
+            <p class="license">采用 MIT 许可证</p>
+        </footer>
+    </div>
+</body>
+
+</html>
