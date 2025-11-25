@@ -247,8 +247,8 @@ public class AnnotationFragment extends Fragment
         RadioButton rbRed = view.findViewById(R.id.rb_red);
         RadioButton rbGreen = view.findViewById(R.id.rb_green);
         RadioButton rbBlue = view.findViewById(R.id.rb_blue);
-        RadioButton rbYellow = view.findViewById(R.id.rb_yellow);
-        RadioButton rbOrange = view.findViewById(R.id.rb_orange);
+        RadioButton rbWhite = view.findViewById(R.id.rb_white);
+        RadioButton rbBlack = view.findViewById(R.id.rb_black);
         RadioButton rbPurple = view.findViewById(R.id.rb_purple);
         RadioGroup rgUnit = view.findViewById(R.id.rg_unit);
         SeekBar sbWidth = view.findViewById(R.id.sb_width);
@@ -273,12 +273,12 @@ public class AnnotationFragment extends Fragment
         } else if (annotation.color == Color.BLUE) {
             rbBlue.setChecked(true);
             selectedColorId[0] = R.id.rb_blue;
-        } else if (annotation.color == Color.YELLOW) {
-            rbYellow.setChecked(true);
-            selectedColorId[0] = R.id.rb_yellow;
-        } else if (annotation.color == Color.parseColor("#FFA500")) {
-            rbOrange.setChecked(true);
-            selectedColorId[0] = R.id.rb_orange;
+        } else if (annotation.color == Color.WHITE) {
+            rbWhite.setChecked(true);
+            selectedColorId[0] = R.id.rb_white;
+        } else if (annotation.color == Color.BLACK) {
+            rbBlack.setChecked(true);
+            selectedColorId[0] = R.id.rb_black;
         } else if (annotation.color == Color.MAGENTA) {
             rbPurple.setChecked(true);
             selectedColorId[0] = R.id.rb_purple;
@@ -293,16 +293,16 @@ public class AnnotationFragment extends Fragment
             rbRed.setChecked(id == R.id.rb_red);
             rbGreen.setChecked(id == R.id.rb_green);
             rbBlue.setChecked(id == R.id.rb_blue);
-            rbYellow.setChecked(id == R.id.rb_yellow);
-            rbOrange.setChecked(id == R.id.rb_orange);
+            rbWhite.setChecked(id == R.id.rb_white);
+            rbBlack.setChecked(id == R.id.rb_black);
             rbPurple.setChecked(id == R.id.rb_purple);
             selectedColorId[0] = id;
         };
         rbRed.setOnClickListener(colorClick);
         rbGreen.setOnClickListener(colorClick);
         rbBlue.setOnClickListener(colorClick);
-        rbYellow.setOnClickListener(colorClick);
-        rbOrange.setOnClickListener(colorClick);
+        rbWhite.setOnClickListener(colorClick);
+        rbBlack.setOnClickListener(colorClick);
         rbPurple.setOnClickListener(colorClick);
 
         if (annotation.unit == Annotation.UNIT_MM)
@@ -336,10 +336,10 @@ public class AnnotationFragment extends Fragment
                         annotation.color = Color.GREEN;
                     else if (id == R.id.rb_blue)
                         annotation.color = Color.BLUE;
-                    else if (id == R.id.rb_yellow)
-                        annotation.color = Color.YELLOW;
-                    else if (id == R.id.rb_orange)
-                        annotation.color = Color.parseColor("#FFA500");
+                    else if (id == R.id.rb_white)
+                        annotation.color = Color.WHITE;
+                    else if (id == R.id.rb_black)
+                        annotation.color = Color.BLACK;
                     else if (id == R.id.rb_purple)
                         annotation.color = Color.MAGENTA;
 

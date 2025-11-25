@@ -5,16 +5,16 @@
     <string name="title_settings">设置</string>
     
     <!-- Photos Tab -->
-    <string name="action_add_photo">添加照片</string>
+    <string name="action_add_photo">添加照片进行标注：</string>
     <string name="action_delete">删除</string>
     <string name="confirm_delete_title">删除照片？</string>
-    <string name="confirm_delete_message">这将从应用中移除照片，但保留原始文件。</string>
+    <string name="confirm_delete_message">这将从应用中移除照片，但不会删除原始文件。</string>
     <string name="source_camera">拍照</string>
     <string name="source_gallery">相册</string>
     <string name="annotation_count">%d 个标注</string>
     <string name="action_export">导出</string>
     <string name="hint_select_photo">请在照片列表里点击需要标注的照片...</string>
-    <string name="hint_add_photo">点击右上角的+添加图片标注</string>
+    <string name="hint_add_photo">点击右上角的+添加图片进行标注...</string>
     
     <!-- Annotation Tab -->
     <string name="action_undo">撤销</string>
@@ -37,8 +37,8 @@
     <string name="color_red">红色</string>
     <string name="color_green">绿色</string>
     <string name="color_blue">蓝色</string>
-    <string name="color_yellow">黄色</string>
-    <string name="color_orange">橙色</string>
+    <string name="color_white">白色</string>
+    <string name="color_black">黑色</string>
     <string name="color_purple">紫色</string>    
     <string name="pref_language">语言</string>
     <string name="pref_about">关于</string>

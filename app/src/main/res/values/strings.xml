@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">DimensionCam</string>
+    <string name="app_name">DimCam</string>
     <string name="title_photos">Photos</string>
     <string name="title_annotation">Annotation</string>
     <string name="title_settings">Settings</string>
     
     <!-- Photos Tab -->
-    <string name="action_add_photo">Add Photo</string>
+    <string name="action_add_photo">Add Photo for Annotation:</string>
     <string name="action_delete">Delete</string>
     <string name="confirm_delete_title">Delete Photo?</string>
     <string name="confirm_delete_message">This will remove the photo from the app but keep the original file.</string>
@@ -14,7 +14,7 @@
     <string name="annotation_count">%d annotations</string>
     <string name="action_export">Export</string>
     <string name="hint_select_photo">Please select a photo from the photos list to annotate...</string>
-    <string name="hint_add_photo">Click + in the top right to add photo annotation</string>
+    <string name="hint_add_photo">Click + in the top right to add photo for annotation...</string>
     
     <!-- Annotation Tab -->
     <string name="action_undo">Undo</string>
@@ -37,8 +37,8 @@
     <string name="color_red">Red</string>
     <string name="color_green">Green</string>
     <string name="color_blue">Blue</string>
-    <string name="color_yellow">Yellow</string>
-    <string name="color_orange">Orange</string>
+    <string name="color_white">White</string>
+    <string name="color_black">Black</string>
     <string name="color_purple">Purple</string>
     <string name="pref_language">Language</string>
     <string name="pref_about">About</string>

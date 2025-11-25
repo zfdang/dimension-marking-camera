@@ -14,7 +14,8 @@
         android:id="@+id/et_distance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number" />
+        android:inputType="number"
+        android:selectAllOnFocus="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +56,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/color_red"
-            android:textColor="@color/red"
             android:textStyle="bold" />
 
         <RadioButton
@@ -65,7 +65,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/color_green"
-            android:textColor="@color/green"
             android:textStyle="bold" />
 
         <RadioButton
@@ -75,7 +74,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/color_blue"
-            android:textColor="@color/blue"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -88,23 +86,21 @@
         android:layout_marginTop="8dp">
 
         <RadioButton
-            android:id="@+id/rb_yellow"
+            android:id="@+id/rb_white"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/color_yellow"
-            android:textColor="@color/yellow"
+            android:text="@string/color_white"
             android:textStyle="bold" />
 
         <RadioButton
-            android:id="@+id/rb_orange"
+            android:id="@+id/rb_black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/color_orange"
-            android:textColor="#FFA500"
+            android:text="@string/color_black"
             android:textStyle="bold" />
 
         <RadioButton
@@ -114,7 +110,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/color_purple"
-            android:textColor="#FF00FF"
             android:textStyle="bold" />
     </LinearLayout>
 
