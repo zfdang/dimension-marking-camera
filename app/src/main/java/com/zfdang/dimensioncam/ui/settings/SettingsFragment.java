@@ -24,6 +24,7 @@ public class SettingsFragment extends Fragment {
     private SettingsManager settingsManager;
     private TextView tvArrowStyle;
     private TextView tvLanguage;
+    private TextView tvMaxScaleFactor;
     private TextView tvVersion;
 
     @Override
@@ -41,10 +42,12 @@ public class SettingsFragment extends Fragment {
 
         tvArrowStyle = view.findViewById(R.id.tv_arrow_style_value);
         tvLanguage = view.findViewById(R.id.tv_language_value);
+        tvMaxScaleFactor = view.findViewById(R.id.tv_max_scale_factor_value);
         tvVersion = view.findViewById(R.id.tv_version_value);
 
         view.findViewById(R.id.ll_arrow_style).setOnClickListener(v -> showArrowStyleDialog());
         view.findViewById(R.id.ll_language).setOnClickListener(v -> showLanguageDialog());
+        view.findViewById(R.id.ll_max_scale_factor).setOnClickListener(v -> showMaxScaleFactorDialog());
         view.findViewById(R.id.ll_author).setOnClickListener(v -> openAuthorProfile());
         view.findViewById(R.id.ll_github).setOnClickListener(v -> openGitHubRepository());
 
@@ -86,6 +89,9 @@ public class SettingsFragment extends Fragment {
         else if ("zh".equals(lang))
             tvLanguage.setText("中文");
 
+        float maxScaleFactor = settingsManager.getMaxScaleFactor();
+        tvMaxScaleFactor.setText(String.format("%.1f", maxScaleFactor));
+
         // Get version info dynamically
         try {
             String versionName = getContext().getPackageManager()
@@ -124,6 +130,31 @@ public class SettingsFragment extends Fragment {
                     if (getActivity() instanceof MainActivity) {
                         ((MainActivity) getActivity()).restart();
                     }
+                })
+                .show();
+    }
+
+    private void showMaxScaleFactorDialog() {
+        // Create options for scale factor: 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0
+        String[] items = { "1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0" };
+        float[] values = { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f };
+
+        // Find current selection
+        float current = settingsManager.getMaxScaleFactor();
+        int selected = 3; // default to 2.5
+        for (int i = 0; i < values.length; i++) {
+            if (Math.abs(values[i] - current) < 0.01f) {
+                selected = i;
+                break;
+            }
+        }
+
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.pref_max_scale_factor)
+                .setSingleChoiceItems(items, selected, (dialog, which) -> {
+                    settingsManager.setMaxScaleFactor(values[which]);
+                    updateUI();
+                    dialog.dismiss();
                 })
                 .show();
     }

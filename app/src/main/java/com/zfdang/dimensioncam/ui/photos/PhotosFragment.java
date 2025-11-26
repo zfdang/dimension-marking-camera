@@ -255,10 +255,14 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
         int arrowStyle = settingsManager.getArrowStyle();
 
         // Calculate scale factor relative to a standard screen width
-        // This ensures text/lines aren't tiny on high-res photos
-        float scaleFactor = resultBitmap.getWidth() / com.zfdang.dimensioncam.utils.Constants.STANDARD_SCREEN_WIDTH;
-        if (scaleFactor < 1f)
-            scaleFactor = 1f;
+        // Use square root scaling to prevent text/lines from becoming too large on
+        // high-res photos
+        // For 1080px: factor=1.0, 2160px: factor=1.41, 4320px: factor=2.0
+        float ratio = resultBitmap.getWidth() / com.zfdang.dimensioncam.utils.Constants.STANDARD_SCREEN_WIDTH;
+        float scaleFactor = (float) Math.pow(ratio, 0.7);
+        // Limit scale factor to user-configured range [1.0, maxScaleFactor]
+        float maxScaleFactor = settingsManager.getMaxScaleFactor();
+        scaleFactor = Math.max(1f, Math.min(scaleFactor, maxScaleFactor));
 
         drawer.draw(canvas, annotations, rect, arrowStyle, false, scaleFactor, false);
 

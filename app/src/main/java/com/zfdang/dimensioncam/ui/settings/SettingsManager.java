@@ -7,6 +7,7 @@ public class SettingsManager {
     private static final String PREF_NAME = "dimension_cam_prefs";
     private static final String KEY_ARROW_STYLE = "arrow_style";
     private static final String KEY_LANGUAGE = "language";
+    private static final String KEY_MAX_SCALE_FACTOR = "max_scale_factor";
 
     public static final int STYLE_T_ARROW_T = 0; // |<----->| T型箭头T型
     public static final int STYLE_T_T = 1; // |-----| T型T型
@@ -19,7 +20,7 @@ public class SettingsManager {
     }
 
     public int getArrowStyle() {
-        return prefs.getInt(KEY_ARROW_STYLE, STYLE_T_ARROW_T);
+        return prefs.getInt(KEY_ARROW_STYLE, STYLE_T_T);
     }
 
     public void setArrowStyle(int style) {
@@ -34,5 +35,16 @@ public class SettingsManager {
 
     public void setLanguage(String lang) {
         prefs.edit().putString(KEY_LANGUAGE, lang).apply();
+    }
+
+    // Maximum scale factor for export (1.0 - 5.0, default 2.5)
+    public float getMaxScaleFactor() {
+        return prefs.getFloat(KEY_MAX_SCALE_FACTOR, 2.5f);
+    }
+
+    public void setMaxScaleFactor(float factor) {
+        // Clamp to valid range [1.0, 5.0]
+        factor = Math.max(1.0f, Math.min(factor, 5.0f));
+        prefs.edit().putFloat(KEY_MAX_SCALE_FACTOR, factor).apply();
     }
 }

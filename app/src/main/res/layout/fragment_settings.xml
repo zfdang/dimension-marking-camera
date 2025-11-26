@@ -40,6 +40,42 @@
         android:layout_height="1dp"
         android:background="#E0E0E0" />
 
+    <!-- Max Scale Factor -->
+    <LinearLayout
+        android:id="@+id/ll_max_scale_factor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_max_scale_factor"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_max_scale_factor_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2.5"
+            android:textColor="#757575" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_max_scale_factor_desc"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0" />
+
     <LinearLayout
         android:id="@+id/ll_language"
         android:layout_width="match_parent"

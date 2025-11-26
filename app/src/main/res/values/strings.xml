@@ -42,6 +42,8 @@
     <string name="color_black">Black</string>
     <string name="color_purple">Purple</string>
     <string name="pref_language">Language</string>
+    <string name="pref_max_scale_factor">Export Scale Factor</string>
+    <string name="pref_max_scale_factor_desc">Max scaling for text/lines on export (1.0–5.0)</string>
     <string name="pref_about">About</string>
     <string name="pref_version">Version</string>
     <string name="pref_github">GitHub Project</string>

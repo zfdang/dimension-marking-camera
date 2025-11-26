@@ -14,8 +14,8 @@ public class Constants {
     public static final float TOUCH_THRESHOLD_DP = 50f;
 
     // Annotation rendering
-    // Base text size for annotation labels
-    public static final float BASE_TEXT_SIZE = 40f;
+    // Base text size for annotation labels (optimized for square root scaling)
+    public static final float BASE_TEXT_SIZE = 48f;
 
     // Shadow layer radius for text readability
     public static final float SHADOW_RADIUS = 2f;
