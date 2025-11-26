@@ -59,12 +59,16 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
     private SettingsManager settingsManager;
     private TextView emptyHint;
 
+    private File currentPhotoFile;
+
     private final ActivityResultLauncher<Intent> takePictureLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    if (currentPhotoUri != null) {
-                        Photo photo = new Photo(currentPhotoUri.toString(), System.currentTimeMillis());
+                    if (currentPhotoFile != null && currentPhotoFile.exists()) {
+                        // Use Uri.fromFile to get file:// URI which is persistent
+                        Uri fileUri = Uri.fromFile(currentPhotoFile);
+                        Photo photo = new Photo(fileUri.toString(), System.currentTimeMillis());
                         photosViewModel.insert(photo);
                     }
                 }
@@ -74,16 +78,20 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
             new ActivityResultContracts.GetContent(),
             uri -> {
                 if (uri != null) {
+                    // Copy selected image to internal storage
                     try {
-                        getContext().getContentResolver().takePersistableUriPermission(uri,
-                                Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    } catch (SecurityException e) {
-                        // This is expected for some content providers (e.g., Google Photos)
-                        // The URI will still work for one-time access
-                        android.util.Log.d("PhotosFragment", "Cannot persist URI permission: " + e.getMessage());
+                        Uri localUri = copyImageToInternalStorage(uri);
+                        if (localUri != null) {
+                            Photo photo = new Photo(localUri.toString(), System.currentTimeMillis());
+                            photosViewModel.insert(photo);
+                        } else {
+                            Toast.makeText(getContext(), "Failed to import image", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Error importing image: " + e.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
                     }
-                    Photo photo = new Photo(uri.toString(), System.currentTimeMillis());
-                    photosViewModel.insert(photo);
                 }
             });
 
@@ -179,6 +187,7 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
                 Toast.makeText(getContext(), "Error creating file", Toast.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
+                currentPhotoFile = photoFile; // Save file reference
                 currentPhotoUri = FileProvider.getUriForFile(getContext(),
                         "com.zfdang.dimensioncam.fileprovider",
                         photoFile);
@@ -192,8 +201,31 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getContext().getExternalFilesDir("Pictures");
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return File.createTempFile(imageFileName, ".jpg", storageDir);
+    }
+
+    private Uri copyImageToInternalStorage(Uri sourceUri) throws IOException {
+        if (getContext() == null)
+            return null;
+
+        // Create destination file
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_" + java.util.UUID.randomUUID().toString() + ".jpg";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File destFile = new File(storageDir, imageFileName);
+
+        // Copy content
+        try (InputStream is = getContext().getContentResolver().openInputStream(sourceUri);
+                OutputStream os = new java.io.FileOutputStream(destFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        }
+
+        return Uri.fromFile(destFile);
     }
 
     @Override
@@ -209,6 +241,23 @@ public class PhotosFragment extends Fragment implements PhotoAdapter.OnPhotoClic
                 .setTitle(R.string.confirm_delete_title)
                 .setMessage(R.string.confirm_delete_message)
                 .setPositiveButton(R.string.action_delete, (dialog, which) -> {
+                    // Delete physical file if it exists in our app storage
+                    try {
+                        Uri uri = Uri.parse(photo.originalPath);
+                        if ("file".equals(uri.getScheme())) {
+                            File file = new File(uri.getPath());
+                            if (file.exists()) {
+                                boolean deleted = file.delete();
+                                if (!deleted) {
+                                    android.util.Log.w("PhotosFragment",
+                                            "Failed to delete file: " + file.getAbsolutePath());
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // Delete from database
                     photosViewModel.delete(photo);
                 })
                 .setNegativeButton(android.R.string.cancel, null)
