@@ -12,7 +12,7 @@ def gitVersion = ('git rev-list HEAD --count'.execute().text.trim().toInteger())
 def appVersion = getDate()
 android {
     namespace 'com.zfdang.dimensioncam'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.zfdang.dimensioncam"
